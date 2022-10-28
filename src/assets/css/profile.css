@@ -1,0 +1,116 @@
+*{
+    box-sizing: border-box;
+}
+.profile__section{
+    min-width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+.profile__container{
+    /* max-width: 500px; */
+    width: 75%;
+    /* border: 2px solid red; */
+    border-radius: 5px;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+.profile__Header{
+    padding: 1rem;
+
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+.profile__Header {
+    font-size: 1.3rem;
+}
+.profile__items{
+    display: flex;
+    padding: 1.5rem;
+    width: 100%;
+}
+.profile__items input{
+    background: none;
+    border: none;
+    box-sizing: border-box;
+    font-size: 1.3rem;
+    padding-bottom: 1rem;
+    margin-left: 25%;
+    text-align: left;
+    color: black;
+    width: 60%;
+    display: block;
+     /* box-shadow: inset 0px -3px 0px 0px rgba(187,187,187,0.2);
+    transition: box-shadow 0.2s ease-in; */
+}
+.profile__items label{
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding-bottom: 1rem 0;
+    width: 100px;
+}
+.profile__items button {
+    background-color: rgb(109,40,217); /* Green */
+    border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1.3rem;
+    margin-left: 25%;
+    cursor: pointer;
+    border-radius: 8px;
+  }
+  
+.userData{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+.profile__items:nth-child(odd){
+    background-color: #c4c4c46b;
+}
+
+@media (max-width:700px) {
+
+    .profile__container{
+        width: 100%;
+    } 
+    .profile__Header{
+        text-align: center;
+    }
+    .profile__items{
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 0;
+
+    }
+    .profile__items label{
+        text-align: center;
+        display: block;
+    }
+    .profile__items input{
+        background: none;
+        border: none;
+        box-sizing: border-box;
+        font-size: 1.3rem;
+        padding: 10px;
+        margin-left: 0;
+        color: black;
+        width: 100%;
+        text-align: center;
+         /* box-shadow: inset 0px -3px 0px 0px rgba(187,187,187,0.2);
+        transition: box-shadow 0.2s ease-in; */
+    }
+    .profile__items button{
+        margin-left: 0;
+        margin: 10px 0;
+        position: relative;
+        transform: scale(0.8);
+       
+    }
+}

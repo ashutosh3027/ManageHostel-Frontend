@@ -1,0 +1,9 @@
+body{
+    background-color: #3f5964c7;
+}
+.App{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
