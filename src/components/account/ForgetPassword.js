@@ -39,7 +39,7 @@ export default function ForgetPassword() {
           />
         </div>
         <div className="form_buttons">
-        <button class="button-43" role="button"  onClick={() => doRequestPasswordReset()}> {isSending?<PulseLoader color={"#f5b921"} size={10} loading={isSending} />: `Reset Password`}</button>
+        <p class="button-43" role="button"  onClick={() => doRequestPasswordReset()}> {isSending?<PulseLoader color={"#f5b921"} size={10} loading={isSending} />: `Reset Password`}</p>
         <Toaster position="top-right" />
         </div>
       </div>

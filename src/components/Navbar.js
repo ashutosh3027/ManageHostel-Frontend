@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./../assets/css/navbar.css";
 import { useUser } from "./../context/userContext";
 export default function Navbar() {
   const [click, setClick] = useState(false);
-  const { isLoggedIn, logout, userData,isAdminLogin} = useUser();
+  const { isLoggedIn, logout,isAdminLogin} = useUser();
   const handleClick = (e) => {
     if (e.target.id === "logout") {
       logout();

@@ -14,7 +14,7 @@ export default function RequestStatus() {
   let displayedRequests = REQUESTS;
 
   function searchHandler(event) {
-    let searcjQery = event.target.value.toLowerCase(),
+    let searcjQery = event.target.value.toLowerCase();
       displayedRequests = REQUESTS.filter((el) => {
         let searchValue = el.name.toLowerCase();
         return searchValue.indexOf(searcjQery) !== -1;
@@ -99,19 +99,19 @@ export default function RequestStatus() {
   );
 }
 
-const Request = (props) => {
-  return (
-    <>
-      <li className="requestLi">
-        <i className="fas fa-user-circle" style={{ fontSize: "36px" }}></i>
-        <div>
-          <div className="date"></div>
-          <div>
-            <p>{props.requestedAt}</p>
-            <p>{props.name}</p>
-          </div>
-        </div>
-      </li>
-    </>
-  );
-};
+// const Request = (props) => {
+//   return (
+//     <>
+//       <li className="requestLi">
+//         <i className="fas fa-user-circle" style={{ fontSize: "36px" }}></i>
+//         <div>
+//           <div className="date"></div>
+//           <div>
+//             <p>{props.requestedAt}</p>
+//             <p>{props.name}</p>
+//           </div>
+//         </div>
+//       </li>
+//     </>
+//   );
+// };

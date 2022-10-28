@@ -1,13 +1,13 @@
-import React, { Children } from "react";
+import React from "react";
 import authServices from "../../services/authServices";
 import "./../../assets/css/signup.css";
 import { useUser } from "../../context/userContext";
-import { Link, Navigate, useLocation } from "react-router-dom";
+import { Navigate} from "react-router-dom";
 import PulseLoader from "react-spinners/PulseLoader";
 export default function Register() {
   const [signUpIsLoading, setSignUpIsLoading] = React.useState(false);
   const [signUpFormData, updateSignUpFormData] = React.useState({});
-  const { setUserState, userData, isLoggedIn} = useUser();
+  const { setUserState, isLoggedIn} = useUser();
   const [redirectToReferrer, setRedirectToReferrer]=React.useState(0);
 
   const handleChanges = (e) => {
@@ -108,37 +108,37 @@ const FormInput = (props) => (
   </div>
 );
 
-const itemList = (props, handleText) => {
-  const list = props.map((item) => (
-    <div onClick={handleText} className="dropdown__item" key={item.toString()}>
-      {item}
-    </div>
-  ));
+// const itemList = (props, handleText) => {
+//   const list = props.map((item) => (
+//     <div onClick={handleText} className="dropdown__item" key={item.toString()}>
+//       {item}
+//     </div>
+//   ));
 
-  return <div className="dropdown__items"> {list} </div>;
-};
-const FormDropdown = (props) => {
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [haveText, setHaveText] = React.useState("");
-  const handleClick = () => {
-    setIsOpen(!isOpen);
-  };
-  const handleText = (ev) => {
-    setHaveText(ev.currentTarget.textContent);
-    props.propsFormData.updateSignUpFormData({ ...props.propsFormData.signUpFormData, [props.name]: ev.currentTarget.textContent});
-  };
-  return (
-    <div className="row">
-      <label>{props.description}</label>
-      <div
-        className={isOpen ? "dropdown active" : "dropdown"}
-        onClick={handleClick}
-      >
-        <div className="dropdown__text">
-          {!haveText ? `Select ${props.description}` : haveText}
-        </div>
-        {itemList(props.options, handleText)}
-      </div>
-    </div>
-  );
-};
+//   return <div className="dropdown__items"> {list} </div>;
+// };
+// const FormDropdown = (props) => {
+//   const [isOpen, setIsOpen] = React.useState(false);
+//   const [haveText, setHaveText] = React.useState("");
+//   const handleClick = () => {
+//     setIsOpen(!isOpen);
+//   };
+//   const handleText = (ev) => {
+//     setHaveText(ev.currentTarget.textContent);
+//     props.propsFormData.updateSignUpFormData({ ...props.propsFormData.signUpFormData, [props.name]: ev.currentTarget.textContent});
+//   };
+//   return (
+//     <div className="row">
+//       <label>{props.description}</label>
+//       <div
+//         className={isOpen ? "dropdown active" : "dropdown"}
+//         onClick={handleClick}
+//       >
+//         <div className="dropdown__text">
+//           {!haveText ? `Select ${props.description}` : haveText}
+//         </div>
+//         {itemList(props.options, handleText)}
+//       </div>
+//     </div>
+//   );
+// };

@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { Link, Navigate, useLocation } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, Navigate} from "react-router-dom";
 import "./../../assets/css/login.css";
 import "./../../assets/css/adminLogin.css"
 import authServices from "../../services/authServices";
 import { useUser } from "../../context/userContext";
 import PulseLoader from "react-spinners/PulseLoader";
-import ForgetPassword from "./ForgetPassword";
 export default function Login() {
   const [formData, updateFormData] = useState({});
-  const { setUserState, userData, isLoggedIn} = useUser();
+  const { setUserState, isLoggedIn} = useUser();
   const [isLoading, setIsLoading]= useState(false); 
-  const {state}=useLocation();
   const [redirectToReferrer, setRedirectToReferrer]=useState(0);
   const handleChanges = (e) => {
     const name = e.target.name;
