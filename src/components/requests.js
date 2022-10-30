@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import "./../assets/css/requests.css";
 import authServices from "./../services/authServices";
 import Spinner from "../components/Spinner";
-import requestServices from "../services/requestServices";
 import { useUser } from "../context/userContext";
 import roomServices from "./../services/roomServices";
 import toast, { Toaster } from "react-hot-toast";
@@ -10,8 +9,8 @@ import toast, { Toaster } from "react-hot-toast";
 export default function requests() {
   const [roomData, setRoomData] = React.useState(null);
   const [activeRequests, setActiveRequests] = React.useState([]);
-  const [inactiveRequests, setInActiveRequests] = React.useState([]);
-  const { userData: user, isLoggedIn, setUserData } = useUser();
+  // const [inactiveRequests, setInActiveRequests] = React.useState([]);
+  const { userData: user, setUserData } = useUser();
   const [isRequested, setIsRequested] = React.useState(false);
   useEffect(() => {
     const getRoom = async () => {
@@ -27,8 +26,8 @@ export default function requests() {
     if(user){
         const tempActiveRequests = user.requests.filter((el)=>el.requestType===true)
         setActiveRequests(tempActiveRequests);
-        const tempInActiveRequests = user.requests.filter((el)=>el.requestType===false);
-        setInActiveRequests(tempInActiveRequests);
+        // const tempInActiveRequests = user.requests.filter((el)=>el.requestType===false);
+        // setInActiveRequests(tempInActiveRequests);
     }
     if (user&&roomData) {
       if (activeRequests.length>0) {
@@ -61,7 +60,6 @@ export default function requests() {
 
   // for fatching data when user apply
   const fatchData = async (roomNumber) => {
-    const data = await requestServices.makeReqest(roomNumber);
     const { user: newUser } = await authServices.getCurrentUser();
     setUserData((prevUser) => ({ ...prevUser, ...newUser }));
     document.querySelector(`.btn-${roomNumber}`).innerHTML = "Requested🟢";

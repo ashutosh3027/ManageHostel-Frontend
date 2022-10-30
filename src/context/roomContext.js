@@ -1,6 +1,4 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { API } from "../axiosConfigure/axiosConfigure";
-import authServices from "../services/authServices";
 import roomServices from "../services/roomServices";
 import { useUser } from "./userContext";
 const RoomContext = createContext();

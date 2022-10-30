@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./../../assets/css/profile.css";
 import { useUser } from "./../../context/userContext";
 import Spinner from "./../Spinner";
@@ -6,7 +6,7 @@ import PulseLoader from "react-spinners/PulseLoader";
 import authServices from "../../services/authServices";
 import toast, { Toaster } from "react-hot-toast";
 export default function Profile() {
-  const { userData: user, isLoggedIn } = useUser();
+  const { userData: user } = useUser();
   const [isSending, setIsSending] = useState(false);
   var dateOfAllotment;
   if (!user) return <Spinner loading={!user} size={100} />;

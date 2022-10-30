@@ -1,12 +1,9 @@
 import React from "react";
 import "./../assets/css/roomstatus.css";
-import rightArrow from "./../assets/images/rightArrow.svg";
 import { useRoom } from "./../context/roomContext";
 import { useNavigate } from "react-router-dom";
 
 export default function RoomStatus() {
-
-  const navigate = useNavigate();
   const { allRooms } = useRoom();
   return (
     <div className="wrapper">
