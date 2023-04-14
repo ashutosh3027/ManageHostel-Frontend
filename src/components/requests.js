@@ -39,7 +39,7 @@ export default function requests() {
     if (isRequested) {
       const getRoomById = async () => {
         const room = await roomServices.getRoomById(user.requests[0].room);
-        document.querySelectorAll(".btn").forEach((el) => {
+        document.querySelectorAll(".button").forEach((el) => {
           el.disabled = true;
           el.classList.add("disabled");
           el.classList.remove("btnEffects");
@@ -101,7 +101,7 @@ export default function requests() {
                   {
                     <div>
                       <button
-                        className={`btn btnEffects btn-${roomNumber}`}
+                        className={`button btnEffects btn-${roomNumber}`}
                         onClick={() => {
                           makeRequest(roomNumber);
                         }}

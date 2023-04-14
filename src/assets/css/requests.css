@@ -54,13 +54,13 @@ input {
   font-family: 'Poppins', sans-serif;
 }
 input:hover {
-  background-color: #fffaf3;
+  /* background-color: #fffaf3; */
 }
 input:focus {
   outline: 1px solid #ccc;
   border: 1px solid #ccc;
 }
-.btn {
+.button {
   box-sizing: border-box;
   appearance: none;
   background-color: transparent;
@@ -81,7 +81,7 @@ input:focus {
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
 }
-.btn{
+.button{
   /* background: yellow; */
   border-color: yellow;
   color: #fff;

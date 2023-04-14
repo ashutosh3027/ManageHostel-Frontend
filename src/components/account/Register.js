@@ -1,8 +1,9 @@
 import React from "react";
 import authServices from "../../services/authServices";
 import "./../../assets/css/signup.css";
+import signupImg from './../../assets/images/signup.gif'
 import { useUser } from "../../context/userContext";
-import { Navigate} from "react-router-dom";
+import {  Link,Navigate} from "react-router-dom";
 import PulseLoader from "react-spinners/PulseLoader";
 export default function Register() {
   const [signUpIsLoading, setSignUpIsLoading] = React.useState(false);
@@ -38,8 +39,9 @@ export default function Register() {
     return (<Navigate to="/" />);
   }
   return (
-    <div className="signup-container">
-      <div id="signupform">
+    <div className="container">
+      <img src={signupImg}></img>
+      <div id="form">
         <FormHeader title="Register" />
         <Form
           signUp={() => {
@@ -49,6 +51,7 @@ export default function Register() {
           handleChanges={handleChanges}
           propsFormData={{signUpFormData, updateSignUpFormData}}
         />
+        <OtherMethods/>
       </div>
     </div>
   );
@@ -107,38 +110,10 @@ const FormInput = (props) => (
     />
   </div>
 );
-
-// const itemList = (props, handleText) => {
-//   const list = props.map((item) => (
-//     <div onClick={handleText} className="dropdown__item" key={item.toString()}>
-//       {item}
-//     </div>
-//   ));
-
-//   return <div className="dropdown__items"> {list} </div>;
-// };
-// const FormDropdown = (props) => {
-//   const [isOpen, setIsOpen] = React.useState(false);
-//   const [haveText, setHaveText] = React.useState("");
-//   const handleClick = () => {
-//     setIsOpen(!isOpen);
-//   };
-//   const handleText = (ev) => {
-//     setHaveText(ev.currentTarget.textContent);
-//     props.propsFormData.updateSignUpFormData({ ...props.propsFormData.signUpFormData, [props.name]: ev.currentTarget.textContent});
-//   };
-//   return (
-//     <div className="row">
-//       <label>{props.description}</label>
-//       <div
-//         className={isOpen ? "dropdown active" : "dropdown"}
-//         onClick={handleClick}
-//       >
-//         <div className="dropdown__text">
-//           {!haveText ? `Select ${props.description}` : haveText}
-//         </div>
-//         {itemList(props.options, handleText)}
-//       </div>
-//     </div>
-//   );
-// };
+const OtherMethods = (props) => (
+  <div class="text">
+    <label>
+    Already have an account? <Link to="/login"> Login  </Link>{" "}
+    </label>
+  </div>
+);

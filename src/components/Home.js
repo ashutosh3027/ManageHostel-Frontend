@@ -14,7 +14,9 @@ export default function Home() {
             Easily manage hostel rooms with <br /> few click.
           </p>
         </div>
-        <img src={homeImg} alt=""/>
+        <div className="imgBox">
+          <img src={homeImg} alt="" />
+        </div>
       </div>
     </>
   );

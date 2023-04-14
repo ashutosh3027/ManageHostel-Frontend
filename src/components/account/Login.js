@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link, Navigate} from "react-router-dom";
 import "./../../assets/css/login.css";
-import "./../../assets/css/adminLogin.css"
+// import "./../../assets/css/adminLogin.css"
+import loginImg from './../../assets/images/login.gif';
 import authServices from "../../services/authServices";
 import { useUser } from "../../context/userContext";
 import PulseLoader from "react-spinners/PulseLoader";
@@ -41,7 +42,8 @@ export default function Login() {
   }
   return (
     <div className="container">
-      <div id="loginform">
+      <img src={loginImg}></img>
+      <div id="form">
         <FormHeader title="Login" />
         <Form handleLogin={handleLogin} handleChanges={handleChanges} isLoading={isLoading} setIsLoading={setIsLoading} />
         <OtherMethods />
@@ -55,24 +57,20 @@ const Form = (props) => (
   <div>
     <FormInput
       description="Email"
-      placeholder="Enter your email"
+      placeholder="Email Address"
       type="text"
       name="email"
       handleChanges={props.handleChanges}
     />
     <FormInput
       description="Password"
-      placeholder="Enter your password"
+      placeholder="Password"
       type="password"
       name="password"
       handleChanges={props.handleChanges}
     />
     <FormButton title="Log in" handleLogin={props.handleLogin} isLoading={props.isLoading} setIsLoading={props.setIsLoading}/>
     <div className="message">
-      <div>
-        <input type="checkbox" name="checked" onChange={props.handleChanges} />{" "}
-        Remember ME
-      </div>
       <div>
         <a href="/forgetPassword">Forgot your password</a>
       </div>
@@ -88,7 +86,7 @@ const FormButton = (props) => (
 
 const FormInput = (props) => (
   <div className="row">
-    <label>{props.description}</label>
+     <label>{props.description}</label>
     <input
       type={props.type}
       placeholder={props.placeholder}
@@ -99,9 +97,9 @@ const FormInput = (props) => (
 );
 
 const OtherMethods = (props) => (
-  <div id="signup">
+  <div class="text">
     <label>
-      New to ManageHostel? <Link to="/signup"> Register </Link>{" "}
+      Need an account? <Link to="/signup"> Sign up </Link>{" "}
     </label>
   </div>
 );

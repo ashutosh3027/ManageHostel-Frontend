@@ -47,5 +47,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://manage-hostel-server.herokuapp.com/"
+  "proxy": "http://localhost:8000/"
 }

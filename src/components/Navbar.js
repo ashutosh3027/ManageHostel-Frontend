@@ -1,15 +1,16 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./../assets/css/navbar.css";
 import { useUser } from "./../context/userContext";
 export default function Navbar() {
   const [click, setClick] = useState(false);
-  const { isLoggedIn, logout,isAdminLogin} = useUser();
+  const navigate = useNavigate()
+  const { isLoggedIn, logout, isAdminLogin } = useUser();
   const handleClick = (e) => {
     if (e.target.id === "logout") {
       logout();
     }
-    if (click) setClick(!click);
+    setClick(!click);
   };
   const Close = () => setClick(false);
 
@@ -18,14 +19,16 @@ export default function Navbar() {
       <div className={click ? "main-container" : ""} onClick={() => Close()} />
       <nav className="navbar" onClick={(e) => e.stopPropagation()}>
         <div className="nav-container">
+          <div className="nav-icon nav-icon-btn" onClick={handleClick}>
+            <i className={click ? "fa fa-times" : "fa fa-bars"}></i>
+          </div>
           <Link to="/" className="nav-logo">
-            ManageHostel
-            <i className="fa fa-code"></i>
+            &lt;ManageHostel/&gt;
           </Link>
           <ul className={click ? "nav-menu active" : "nav-menu"}>
             {!isLoggedIn && (
               <>
-                <li className="nav-item">
+                <li className="nav-item nav-item-link">
                   <Link
                     to="/"
                     activeclassname="active"
@@ -35,7 +38,7 @@ export default function Navbar() {
                     Home
                   </Link>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item nav-item-link">
                   <Link
                     to="/about"
                     activeclassname="active"
@@ -45,17 +48,7 @@ export default function Navbar() {
                     About Us
                   </Link>
                 </li>
-                <li className="nav-item">
-                  <Link
-                    to="/Login"
-                    activeclassname="active"
-                    className="nav-links"
-                    onClick={click ? handleClick : null}
-                  >
-                    Login
-                  </Link>
-                </li>
-                <li className="nav-item">
+                <li className="nav-item nav-item-link section">
                   <Link
                     to="/contact"
                     activeclassname="active"
@@ -65,11 +58,36 @@ export default function Navbar() {
                     Contact Us
                   </Link>
                 </li>
+                <li className="nav-item nav-item-btn">
+                  <button onClick={(e) => {
+                    navigate('/login');
+                    if (click) {
+                      handleClick(e)
+                    }
+                  }}
+                    className=" btn btn-default btn-rounded"
+                  >
+                    Login
+                  </button>
+                </li>
+                <li className="nav-item nav-item-btn">
+                  <button onClick={(e) => {
+                    navigate('/signup')
+                    if (click) {
+                      handleClick(e);
+                    }
+
+                  }}
+                    className="btn btn-primary btn-rounded"
+                  >
+                    Sign up
+                  </button>
+                </li>
               </>
             )}
             {isLoggedIn && (
               <>
-                <li className="nav-item">
+                <li className="nav-item nav-item-link">
                   <Link
                     to="/"
                     activeclassname="active"
@@ -81,30 +99,30 @@ export default function Navbar() {
                 </li>
                 {isAdminLogin ? (
                   <>
-                  <li className="nav-item">
-                    <Link
-                      to="/roomStatus"
-                      activeclassname="active"
-                      className="nav-links"
-                      onClick={click ? handleClick : null}
-                    >
-                      RoomStatus
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link
-                      to="/requestStatus"
-                      activeclassname="active"
-                      className="nav-links"
-                      onClick={click ? handleClick : null}
-                    >
-                      RequestStatus
-                    </Link>
-                  </li>
-                </>
+                    <li className="nav-item nav-item-link">
+                      <Link
+                        to="/roomStatus"
+                        activeclassname="active"
+                        className="nav-links"
+                        onClick={click ? handleClick : null}
+                      >
+                        RoomStatus
+                      </Link>
+                    </li>
+                    <li className="nav-item nav-item-link">
+                      <Link
+                        to="/requestStatus"
+                        activeclassname="active"
+                        className="nav-links"
+                        onClick={click ? handleClick : null}
+                      >
+                        RequestStatus
+                      </Link>
+                    </li>
+                  </>
                 ) : (
                   <>
-                    <li className="nav-item">
+                    <li className="nav-item nav-item-link">
                       <Link
                         to="/profile"
                         activeclassname="active"
@@ -114,7 +132,7 @@ export default function Navbar() {
                         My Profile
                       </Link>
                     </li>
-                    <li className="nav-item">
+                    <li className="nav-item nav-item-link">
                       <Link
                         to="/bookHostel"
                         activeclassname="active"
@@ -126,7 +144,7 @@ export default function Navbar() {
                     </li>
                   </>
                 )}
-              
+
                 {/* <li className="nav-item">
                   <Link
                     to="/myRoom"
@@ -147,7 +165,7 @@ export default function Navbar() {
                     Request Status
                   </Link>
                 </li> */}
-                <li className="nav-item">
+                <li className="nav-item nav-item-link">
                   <Link
                     to="/"
                     activeclassname="active"
@@ -162,9 +180,7 @@ export default function Navbar() {
             )}
           </ul>
 
-          <div className="nav-icon" onClick={handleClick}>
-            <i className={click ? "fa fa-times" : "fa fa-bars"}></i>
-          </div>
+
         </div>
       </nav>
     </>
