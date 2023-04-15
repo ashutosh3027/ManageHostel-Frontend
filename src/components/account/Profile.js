@@ -28,10 +28,6 @@ export default function Profile() {
   return (
     <div className="profile__section">
       <div className="profile__container">
-        <div className="profile__Header">
-          <h1>Profile </h1>
-          <p>Your personal information</p>
-        </div>
         <div className="profile__photo"></div>
         <div className="userData">
           <FormInput
