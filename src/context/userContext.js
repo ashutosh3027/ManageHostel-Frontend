@@ -19,9 +19,7 @@ const UserProvider = ({ children }) => {
           setIsDataLoading(false);
         }, 3000);
         console.log(user);
-      });
-      
-     
+      });     
     }
   }, [isLoggedIn]);
   useEffect(() => {

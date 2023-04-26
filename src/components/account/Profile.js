@@ -42,6 +42,7 @@ export default function Profile() {
             isDisabled={true}
             value={user.email}
           />
+          {/* <FormInput description="Organisation" type="text" isDisabled={true} value={user.organisation}/> */}
           {/* <FormInput description="Semester" type="text" isDisabled={true} value={user.sem}/>
           <FormInput description="Section" type="text" isDisabled={true} value={user.sec}/>
           <FormInput description="Branch" type="text" isDisabled={true} value={user.branch}/> */}
