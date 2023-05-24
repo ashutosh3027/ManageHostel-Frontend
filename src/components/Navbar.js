@@ -17,7 +17,7 @@ export default function Navbar() {
   return (
     <>
       <div className={click ? "main-container" : ""} onClick={() => Close()} />
-      <nav className="navbar" onClick={(e) => e.stopPropagation()}>
+      <nav className="navbar p-auto justify-content-around" onClick={(e) => e.stopPropagation()}>
         <div className="nav-container">
           <div className="nav-icon nav-icon-btn" onClick={handleClick}>
             <i className={click ? "fa fa-times" : "fa fa-bars"}></i>
@@ -25,10 +25,10 @@ export default function Navbar() {
           <Link to="/" className="nav-logo">
             &lt;ManageHostel/&gt;
           </Link>
-          <ul className={click ? "nav-menu active" : "nav-menu"}>
+          <ul className={click ? "nav-menu active align-items-center justify-content-around m-auto" : "nav-menu align-items-center justify-content-around m-auto"}>
             {!isLoggedIn && (
               <>
-                <li className="nav-item nav-item-link">
+                <li className="custom-nav-item custom-nav-item-link">
                   <Link
                     to="/"
                     activeclassname="active"
@@ -38,7 +38,7 @@ export default function Navbar() {
                     Home
                   </Link>
                 </li>
-                <li className="nav-item nav-item-link">
+                <li className="custom-nav-item custom-nav-item-link">
                   <Link
                     to="/about"
                     activeclassname="active"
@@ -48,7 +48,7 @@ export default function Navbar() {
                     About Us
                   </Link>
                 </li>
-                <li className="nav-item nav-item-link section">
+                <li className="custom-nav-item custom-nav-item-link section">
                   <Link
                     to="/contact"
                     activeclassname="active"
@@ -58,19 +58,19 @@ export default function Navbar() {
                     Contact Us
                   </Link>
                 </li>
-                <li className="nav-item nav-item-btn">
+                <li className="custom-nav-item nav-item-btn">
                   <button onClick={(e) => {
                     navigate('/login');
                     if (click) {
                       handleClick(e)
                     }
                   }}
-                    className=" btn btn-default btn-rounded"
+                    className=" custom-btn btn-default btn-rounded"
                   >
                     Login
                   </button>
                 </li>
-                <li className="nav-item nav-item-btn">
+                <li className="custom-nav-item nav-item-btn">
                   <button onClick={(e) => {
                     navigate('/signup')
                     if (click) {
@@ -78,7 +78,7 @@ export default function Navbar() {
                     }
 
                   }}
-                    className="btn btn-primary btn-rounded"
+                    className="custom-btn btn-primary btn-rounded"
                   >
                     Sign up
                   </button>
@@ -87,7 +87,7 @@ export default function Navbar() {
             )}
             {isLoggedIn && (
               <>
-                <li className="nav-item nav-item-link">
+                <li className="custom-nav-item custom-nav-item-link">
                   <Link
                     to="/"
                     activeclassname="active"
@@ -99,7 +99,7 @@ export default function Navbar() {
                 </li>
                 {isAdminLogin ? (
                   <>
-                    <li className="nav-item nav-item-link">
+                    <li className="custom-nav-item custom-nav-item-link">
                       <Link
                         to="/roomStatus"
                         activeclassname="active"
@@ -109,7 +109,7 @@ export default function Navbar() {
                         RoomStatus
                       </Link>
                     </li>
-                    <li className="nav-item nav-item-link">
+                    <li className="custom-nav-item custom-nav-item-link">
                       <Link
                         to="/requestStatus"
                         activeclassname="active"
@@ -122,7 +122,7 @@ export default function Navbar() {
                   </>
                 ) : (
                   <>
-                    <li className="nav-item nav-item-link">
+                    <li className="custom-nav-item custom-nav-item-link">
                       <Link
                         to="/profile"
                         activeclassname="active"
@@ -132,14 +132,14 @@ export default function Navbar() {
                         My Profile
                       </Link>
                     </li>
-                    <li className="nav-item nav-item-link">
+                    <li className="custom-nav-item custom-nav-item-link">
                       <Link
-                        to="/bookHostel"
+                        to="/hostels"
                         activeclassname="active"
                         className="nav-links"
                         onClick={click ? handleClick : null}
                       >
-                        Book Hostel
+                        Hostels
                       </Link>
                     </li>
                   </>
@@ -165,7 +165,7 @@ export default function Navbar() {
                     Request Status
                   </Link>
                 </li> */}
-                <li className="nav-item nav-item-link">
+                <li className="custom-nav-item custom-nav-item-link">
                   <Link
                     to="/"
                     activeclassname="active"

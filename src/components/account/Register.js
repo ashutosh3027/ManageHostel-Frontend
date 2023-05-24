@@ -39,8 +39,8 @@ export default function Register() {
     return (<Navigate to="/" />);
   }
   return (
-    <div className="container">
-      <img src={signupImg}></img>
+    <div className="container d-flex justify-content-around align-items-center">
+      <img src={signupImg} alt="img"></img>
       <div id="form">
         <FormHeader title="Register" />
         <Form
@@ -94,13 +94,13 @@ const Form = (props) => (
 );
 
 const FormButton = (props) => (
-  <div id="button" className="row">
+  <div id="button" className="coustom-row">
     <button onClick={props.handleSignUp} disabled={props.isLoading}>{props.isLoading? <PulseLoader color={"#f5b921"} size={10} loading={props.isLoading} />:(props.title)}</button>
   </div>
 );
 
 const FormInput = (props) => (
-  <div className="row">
+  <div className="coustom-row">
     <label>{props.description}</label>
     <input
       type={props.type}

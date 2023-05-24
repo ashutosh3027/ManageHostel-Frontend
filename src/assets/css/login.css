@@ -10,16 +10,18 @@
   flex-wrap: wrap;
 }
 .container img{
-  width: 40%;
-  flex: 1;
+  aspect-ratio: 1 / 1;
+  width: 50%;
 }
 
 #form {
   box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
   padding:1rem;
   background-color: #FFFFFF;
-  min-width: 350px;
+  min-width: 400px;
   margin: 10px;
+  width: 35%;
+  
   transform: scale(0.8);
   /* flex: 0.5; */
 }
@@ -30,7 +32,7 @@
   color: #2d6ef0;
 }
 
-.row {
+.coustom-row {
   display: flex;
   flex-direction:column;
   align-items: center;
@@ -38,7 +40,7 @@
   max-width: 100%;
    
 }
-.row input {
+.coustom-row input {
   width: 100%;
   border-radius: 5px;
   box-sizing: border-box;
@@ -50,16 +52,16 @@
   padding: 12px 12px;
 }
 
-.row input::-webkit-input-placeholder {
+.coustom-row input::-webkit-input-placeholder {
   opacity: 1;
   transition: opacity 0.25s ease-out;
 }
 
-.row input:hover::-webkit-input-placeholder,
-.row input:focus::-webkit-input-placeholder {
+.coustom-row input:hover::-webkit-input-placeholder,
+.coustom-row input:focus::-webkit-input-placeholder {
   opacity: 0;
 }
-.row button {
+.coustom-row button {
   border-radius: 5px;
   width: 100%;
   padding: 1rem;
@@ -84,22 +86,22 @@ button:disabled {
   opacity: 0.5;
 }
 
-.row input:focus {
+.coustom-row input:focus {
   /* box-shadow: inset 0px -3px 0px 0px rgba(34,193,195,0.7); */
   outline: none;
 }
 
-.row input::-webkit-input-placeholder {
+.coustom-row input::-webkit-input-placeholder {
   opacity: 1;
   transition: opacity 0.25s ease-out;
 }
 
-.row input:hover::-webkit-input-placeholder,
-.row input:focus::-webkit-input-placeholder {
+.coustom-row input:hover::-webkit-input-placeholder,
+.coustom-row input:focus::-webkit-input-placeholder {
   opacity: 0;
 }
 
-.row label {
+.coustom-row label {
   align-self: start;
   padding-bottom: 0.5rem;
   color: rgba(187, 187, 187, 0.9);
@@ -108,4 +110,10 @@ button:disabled {
   display: flex;
   font-family: "work sans";
   justify-content: space-around;
+}
+@media screen and (max-width: 1000px){
+  .container img{
+    aspect-ratio: 1 / 1;
+    width: 100%;
+  }
 }

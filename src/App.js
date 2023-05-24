@@ -8,6 +8,7 @@ import Register from "./components/account/Register";
 import ProtectedRoute from "./utils/ProtectedRoute.js";
 import "./App.css";
 import BookHostel from "./components/requests.js";
+import Hostels from "./components/Hostels";
 import Spinner from "./components/Spinner";
 import RoomStatus from "./components/RoomStatus";
 import RequestStatus from "./components/RequestStatus";
@@ -42,10 +43,10 @@ function App() {
                 }
               ></Route>
               <Route
-                path="/bookHostel"
+                path="/hostels"
                 element={
                   <ProtectedRoute>
-                    <BookHostel />{" "}
+                    <Hostels />{" "}
                   </ProtectedRoute>
                 }
               ></Route>
