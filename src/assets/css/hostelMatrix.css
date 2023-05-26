@@ -1,0 +1,21 @@
+.matrix-cell{
+    background: grey;
+    margin: 2px;
+    aspect-ratio: 1 / 1;
+    width: 4rem;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.matrixContainer{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem;
+}
+.matrix{
+    margin: 1rem;
+}
