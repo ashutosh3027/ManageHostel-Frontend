@@ -9,6 +9,7 @@ import ProtectedRoute from "./utils/ProtectedRoute.js";
 import "./App.css";
 import BookHostel from "./components/requests.js";
 import Hostels from "./components/Hostels";
+import Hostel from "./components/Hostel";
 import Spinner from "./components/Spinner";
 import RoomStatus from "./components/RoomStatus";
 import RequestStatus from "./components/RequestStatus";
@@ -47,6 +48,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Hostels />{" "}
+                  </ProtectedRoute>
+                }
+              ></Route>
+              <Route
+                path="/hostels/:id"
+                element={
+                  <ProtectedRoute>
+                    <Hostel />{" "}
                   </ProtectedRoute>
                 }
               ></Route>
