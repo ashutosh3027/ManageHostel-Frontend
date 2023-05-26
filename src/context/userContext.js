@@ -15,11 +15,15 @@ const UserProvider = ({ children }) => {
         if(user&&user.role==="admin"){
           setIsAdminLogin(true);
         }
-        setTimeout(()=>{
-          setIsDataLoading(false);
-        }, 3000);
+        setIsDataLoading(false);
         console.log(user);
-      });     
+      }).catch((err)=>{
+        console.log(err);
+        localStorage.removeItem("jwt");
+        setIsLoggedIn(false);
+        setAuthData({token:" "});
+        setIsDataLoading(false);
+      })    
     }
   }, [isLoggedIn]);
   useEffect(() => {
