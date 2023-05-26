@@ -44,7 +44,6 @@
   border-radius: var(--radius);
   min-width: 28rem;
   display: flex;
-  background-color: #afa281;
   font-weight: 200;
 }
 .card__img {
