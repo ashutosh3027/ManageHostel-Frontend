@@ -14,7 +14,7 @@
     margin-top: 10%;   
   }
    */
-.navbar {
+.customNavbar {
   background-color: #ffffff;
   min-height: 8vh;
   min-height: 80px;
@@ -27,6 +27,7 @@
   position: sticky;
   top: 0;
   z-index: 20;
+  padding: 0.5rem;
 }
 
 .nav-container {

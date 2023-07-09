@@ -5,6 +5,7 @@ const UserProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [authData, setAuthData] = useState({ token: "" });
   const [userData, setUserData] = useState(null);
+  console.log(userData)
   const [isDataLoading, setIsDataLoading]=useState(true);
   const [isAdminLogin, setIsAdminLogin] = useState(false);
   useEffect(() => {
@@ -16,7 +17,6 @@ const UserProvider = ({ children }) => {
           setIsAdminLogin(true);
         }
         setIsDataLoading(false);
-        console.log(user);
       }).catch((err)=>{
         console.log(err);
         localStorage.removeItem("jwt");
@@ -28,7 +28,6 @@ const UserProvider = ({ children }) => {
   }, [isLoggedIn]);
   useEffect(() => {
     const token = localStorage.getItem("jwt");
-    console.log(token)
     if (token) {
       setIsLoggedIn(true);
       
@@ -53,10 +52,20 @@ const UserProvider = ({ children }) => {
     setIsLoggedIn(false);
     authServices.logout();
   };
+  const updateUserData = ()=>{
+    try {
+      (async () =>{
+        const { user } =await authServices.getCurrentUser();
+        setUserData((prevUser) => ({ ...prevUser, ...user }));
+      })();
+    } catch (error) {
+      
+    }
+  }
 
   return (
     <UserContext.Provider
-      value={{ isLoggedIn, setIsLoggedIn, authData, userData, setUserState:(data)=>setUserInfo(data), setUserData,logout,isDataLoading,isAdminLogin}}
+      value={{ isLoggedIn, setIsLoggedIn, authData, userData, setUserState:(data)=>setUserInfo(data), setUserData,logout,isDataLoading,isAdminLogin,updateUserData}}
     >
       {children}
     </UserContext.Provider>

@@ -1,6 +1,5 @@
 .homeContainer{
-    min-width: 100vw;
-    height: 90vh;
+    min-height: 100vh;
     /* background-image: linear-gradient(to right top, #05419b, #0065b5, #0083b1, #009c98, #13b177); */
     background-position: center;
     background-repeat: no-repeat;

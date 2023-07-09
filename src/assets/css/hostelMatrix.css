@@ -8,6 +8,9 @@
     align-items: center;
     justify-content: center;
 }
+.matrix-cell:hover{
+    cursor: pointer;
+}
 .matrixContainer{
     display: flex;
     flex-direction: column;
@@ -18,4 +21,7 @@
 }
 .matrix{
     margin: 1rem;
+}
+.empty-seat{
+    background:#5ccf5c;
 }

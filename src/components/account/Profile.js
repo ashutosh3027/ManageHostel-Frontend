@@ -4,10 +4,13 @@ import { useUser } from "./../../context/userContext";
 import Spinner from "./../Spinner";
 import PulseLoader from "react-spinners/PulseLoader";
 import authServices from "../../services/authServices";
+import roomServices from "../../services/roomServices";
 import toast, { Toaster } from "react-hot-toast";
+
 export default function Profile() {
-  const { userData: user } = useUser();
+  const { userData: user, updateUserData } = useUser();
   const [isSending, setIsSending] = useState(false);
+  const [isVacating, setIsVacating] = useState(false);
   var dateOfAllotment;
   if (!user) return <Spinner loading={!user} size={100} />;
   if (user) {
@@ -15,16 +18,36 @@ export default function Profile() {
   }
   const resetPassword = () => {
     setIsSending(true);
-    authServices.forgotPassword(user.email).then((data)=>{
-      console.log(data);
-       if(data.data.status==="success"){
-         toast.success('Email has been sent successfully.')
-         setIsSending(false);
-       }
-    }).catch((error) => {
-      setIsSending(false);
-    });
+    authServices.forgotPassword(user.email)
+      .then((data) => {
+        console.log(data);
+        if (data.data.status === "success") {
+          toast.success("Email has been sent successfully.");
+          setIsSending(false);
+        }
+      })
+      .catch((error) => {
+        setIsSending(false);
+      });
   };
+
+  const vacantRoom = async (roomId) => {
+    setIsVacating(true);
+    await roomServices.vacantRoom(roomId)
+      .then((data) => {
+        console.log(data);
+        // Handle success response
+        setIsVacating(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        // Handle error response
+        setIsVacating(false);
+      });
+    updateUserData();
+    
+  };
+
   return (
     <div className="profile__section">
       <div className="profile__container">
@@ -42,8 +65,10 @@ export default function Profile() {
             isDisabled={true}
             value={user.email}
           />
-          {/* <FormInput description="Organisation" type="text" isDisabled={true} value={user.organisation}/> */}
-          {/* <FormInput description="Semester" type="text" isDisabled={true} value={user.sem}/>
+
+          {/* Additional FormInput fields for Organisation, Semester, Section, Branch */}
+          {/* <FormInput description="Organisation" type="text" isDisabled={true} value={user.organisation}/>
+          <FormInput description="Semester" type="text" isDisabled={true} value={user.sem}/>
           <FormInput description="Section" type="text" isDisabled={true} value={user.sec}/>
           <FormInput description="Branch" type="text" isDisabled={true} value={user.branch}/> */}
 
@@ -58,6 +83,7 @@ export default function Profile() {
             </button>
             <Toaster position="top-right" />
           </div>
+
           {user.isRoomAlloted ? (
             <>
               <FormInput
@@ -72,6 +98,16 @@ export default function Profile() {
                 isDisabled={true}
                 value={`${dateOfAllotment.getDate()}/${dateOfAllotment.getMonth()}/${dateOfAllotment.getFullYear()}`}
               />
+              <div className="profile__items">
+                <label>Vacate Room</label>
+                <button disable={isVacating} onClick={() => vacantRoom(user.room[0].id)}>
+                  {isVacating ? (
+                    <PulseLoader color={"#0a138b"} size={10} />
+                  ) : (
+                    "Vacate"
+                  )}
+                </button>
+              </div>
             </>
           ) : (
             <FormInput

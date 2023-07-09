@@ -32,3 +32,10 @@
 .card_details span{
     padding-left: 4px;
 }
+.normal-text{
+    color: black;
+    text-decoration: none;
+}
+.normal-text:hover{
+    color: black;
+}

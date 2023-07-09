@@ -9,15 +9,20 @@ export default function Navbar() {
   const handleClick = (e) => {
     if (e.target.id === "logout") {
       logout();
+      if(click) setClick(!click)
+      return;
     }
     setClick(!click);
   };
-  const Close = () => setClick(false);
-
+  const Close = () => setClick(!click);
+  if(window.innerWidth===1000){
+    setClick(false);
+  }
+  
   return (
     <>
       <div className={click ? "main-container" : ""} onClick={() => Close()} />
-      <nav className="navbar p-auto justify-content-around" onClick={(e) => e.stopPropagation()}>
+      <nav className="customNavbar p-auto justify-content-around" onClick={(e) => e.stopPropagation()}>
         <div className="nav-container">
           <div className="nav-icon nav-icon-btn" onClick={handleClick}>
             <i className={click ? "fa fa-times" : "fa fa-bars"}></i>
