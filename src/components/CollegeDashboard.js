@@ -1,5 +1,6 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { Spinner } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faTimes } from '@fortawesome/free-solid-svg-icons';
 import CreateHostels from './CreateHostels';
@@ -22,18 +23,20 @@ const CollegeDashboard = () => {
     //     ]
     // }
     const temp = {
-        name:undefined,
-        description:undefined,
-        hostels:[]
+        name: undefined,
+        description: undefined,
+        hostels: []
     }
     const [college, setCollege] = useState(temp);
     const [collegeId, setCollegeId] = useState(useParams().id);
-
-    useEffect(()=>{
-        (async ()=>{
-            const {collegeName}= await collegeServices.getCollege(collegeId)
+    const [isCollegeDataLoading, setIsCollegeDataLoading] = useState(true);
+    useEffect(() => {
+        (async () => {
+            setIsCollegeDataLoading(true);
+            const { collegeName } = await collegeServices.getCollege(collegeId)
             const hostels1 = await collegeServices.getAllBuildingsByCollegeId(collegeId);
-            setCollege({...college, name:collegeName, hostels:[...hostels1]});
+            setCollege({ ...college, name: collegeName, hostels: [...hostels1] });
+            setIsCollegeDataLoading(false);
         })()
     }, [collegeId]);
     const [isEditingName, setIsEditingName] = useState(false);
@@ -81,49 +84,55 @@ const CollegeDashboard = () => {
     };
 
     return (
+
         <div className='mt-5'>
-            <h2>College Dashboard</h2>
-            <div className=" card p-2">
-                <div className='row'>
-                    <label className='col text-start font-weight-bold' > <h4>Name:</h4></label>
-                    {isEditingName ? (
-                        <div className='col'>
-                            < input type="text" value={editedName} onChange={handleNameChange} />
-                            <FontAwesomeIcon icon={faPen} className="edit-icon" onClick={handleSaveNameClick} />
-                            <FontAwesomeIcon icon={faTimes} className="edit-icon" onClick={handleCancelNameClick} />
+            {isCollegeDataLoading ? <Spinner animation='border' role='status'>
+                <span className='visually-hidden'>Loading...</span>
+            </Spinner> :
+                <>
+                    <h2>College Dashboard</h2>
+                    <div className=" card p-2">
+                        <div className='row'>
+                            <label className='col text-start font-weight-bold' > <h4>Name:</h4></label>
+                            {isEditingName ? (
+                                <div className='col'>
+                                    < input type="text" value={editedName} onChange={handleNameChange} />
+                                    <FontAwesomeIcon icon={faPen} className="edit-icon" onClick={handleSaveNameClick} />
+                                    <FontAwesomeIcon icon={faTimes} className="edit-icon" onClick={handleCancelNameClick} />
+
+                                </div>
+                            ) : (
+                                <div className='col'>
+                                    <span className='text-start text-md-start'>{college.name}</span>
+                                    <FontAwesomeIcon icon={faPen} className="edit-icon" onClick={handleEditNameClick} />
+                                </div>
+                            )}
+                        </div>
+                        <div className='row'>
+                            <label className='col text-start font-weight-bold'><h4>Description:</h4></label>
+                            {isEditingDescription ? (
+                                <div className='col'>
+                                    <textarea value={editedDescription} onChange={handleDescriptionChange} />
+                                    <FontAwesomeIcon icon={faPen} className="edit-icon" onClick={handleSaveDescriptionClick} />
+                                    <FontAwesomeIcon icon={faTimes} className="edit-icon" onClick={handleCancelDescriptionClick} />
+                                </div>
+                            ) : (
+                                <div className='col'>
+                                    <span className='text-start'>{college.description}</span>
+                                    <FontAwesomeIcon icon={faPen} className="edit-icon" onClick={handleEditDescriptionClick} />
+                                </div>
+                            )}
+                        </div>
+                        <div className='row'>
+                            <label className='col text-start font-weight-bold'><h4>Hostels:</h4></label>
+                            <div className='col'>
+                                <span className='text-start'>{college.hostels.length}</span>
+                            </div>
 
                         </div>
-                    ) : (
-                        <div className='col'>
-                            <span className='text-start text-md-start'>{college.name}</span>
-                            <FontAwesomeIcon icon={faPen} className="edit-icon" onClick={handleEditNameClick} />
-                        </div>
-                    )}
-                </div>
-                <div className='row'>
-                    <label className='col text-start font-weight-bold'><h4>Description:</h4></label>
-                    {isEditingDescription ? (
-                        <div className='col'>
-                            <textarea value={editedDescription} onChange={handleDescriptionChange} />
-                            <FontAwesomeIcon icon={faPen} className="edit-icon" onClick={handleSaveDescriptionClick} />
-                            <FontAwesomeIcon icon={faTimes} className="edit-icon" onClick={handleCancelDescriptionClick} />
-                        </div>
-                    ) : (
-                        <div className='col'>
-                            <span className='text-start'>{college.description}</span>
-                            <FontAwesomeIcon icon={faPen} className="edit-icon" onClick={handleEditDescriptionClick} />
-                        </div>
-                    )}
-                </div>
-                <div className='row'>
-                    <label className='col text-start font-weight-bold'><h4>Hostels:</h4></label>
-                    <div className='col'>
-                        <span className='text-start'>{college.hostels.length}</span>
                     </div>
-
-                </div>
-            </div>
-            <CreateHostels college={college} setCollege={setCollege} />
+                    <CreateHostels college={college} setCollege={setCollege} />
+                </>}
         </div >
     );
 };

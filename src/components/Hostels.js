@@ -41,7 +41,6 @@ export default function Hostels() {
                 })
 
             })
-            console.log(tempCollegeList)
             setCollegeList(tempCollegeList)
 
         })()

@@ -6,12 +6,15 @@ const RoomContext = createContext();
 const RoomProvider = ({ children }) => {
   const { isAdminLogin } = useUser();
   const [allRooms, setAllRooms] = useState([]);
+  const [isRoomDataLoading, setIsRoomDataLoading] = useState(false);
   const [roomData, setRoomData] = useState([])
   const updateRoomData = (hostelId) => {
     (async () => {
+      setIsRoomDataLoading(true);
       const roomList = await roomServices.getRoomByBuildingId(hostelId)
       console.log(roomList)
-      setRoomData([...roomList])
+      setRoomData([...roomList]);
+      setIsRoomDataLoading(false);
     })()
   }
   useEffect(() => {
@@ -25,7 +28,7 @@ const RoomProvider = ({ children }) => {
     }
   }, [isAdminLogin])
   return (
-    <RoomContext.Provider value={{ allRooms, roomData, updateRoomData }}>
+    <RoomContext.Provider value={{ allRooms, roomData, updateRoomData, isRoomDataLoading }}>
       {children}
     </RoomContext.Provider>
   );

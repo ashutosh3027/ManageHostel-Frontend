@@ -64,6 +64,7 @@ const CreateHostels = ({ college, setCollege }) => {
     const handleCreateHostel = async (hostelName) => {
         const newHostel = await buildingServices.createHostel(hostelName, college.name);
         setHostels([...hostels, newHostel]);
+        setCollege({...college, hostels:[...college.hostels, newHostel]});
     };
     return (
         <div className='flex-column mt-5'>

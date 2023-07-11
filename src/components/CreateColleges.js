@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Row, Col, Form, Button } from 'react-bootstrap';
+import { Row, Col, Form, Button, Spinner } from 'react-bootstrap';
 import ListComponent from './ListComponent';
 import ListGroup from 'react-bootstrap/ListGroup';
 import collegeServices from '../services/collegeServices';
@@ -58,10 +58,13 @@ const CollegeDetail = ({ college, onAddBuilding, index }) => {
 
 const CreateCollegesPage = () => {
     const [colleges, setColleges] = useState([]);
-    useEffect(()=>{
-        (async ()=>{
-            const data =  await collegeServices.getAllColleges();
-            setColleges([...data])
+    const [isLoading, setIsLoading] = useState(true);
+    useEffect(() => {
+        (async () => {
+            setIsLoading(true);
+            const data = await collegeServices.getAllColleges();
+            setColleges([...data]);
+            setIsLoading(false);
         })()
     }, [])
     const handleCreateCollege = async (collegeName) => {
@@ -74,20 +77,26 @@ const CreateCollegesPage = () => {
             <Row>
                 <h2>Create Colleges</h2>
             </Row>
-            <Row>
-                <CollegeForm onSubmit={handleCreateCollege} />
-            </Row>
 
-            <ListComponent heading={'Colleges'} count={colleges.length}>
-                <ListGroup className="list-group-flush" style={{ "minWidth": "50vw" }}>
-                    {colleges.map((college, idx) => (
-                        <ListGroup.Item key={idx} className="p-1 text-left"  >
-                            <CollegeDetail key={idx} college={college} index={idx}/>
-                        </ListGroup.Item>
-                    ))}
-                </ListGroup>
+            {isLoading ? <Spinner animation='border' role='status'>
+                <span className='visually-hidden'>Loading...</span>
+            </Spinner> :
+                <>
+                    <Row>
+                        <CollegeForm onSubmit={handleCreateCollege} />
+                    </Row>
+                    <ListComponent heading={'Colleges'} count={colleges.length}>
+                        <ListGroup className="list-group-flush" style={{ "minWidth": "50vw" }}>
+                            {colleges.map((college, idx) => (
+                                <ListGroup.Item key={idx} className="p-1 text-left"  >
+                                    <CollegeDetail key={idx} college={college} index={idx} />
+                                </ListGroup.Item>
+                            ))}
+                        </ListGroup>
 
-            </ListComponent>
+                    </ListComponent>
+                </>
+            }
         </div>
     );
 };
