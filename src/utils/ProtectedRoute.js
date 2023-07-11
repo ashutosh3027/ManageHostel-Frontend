@@ -1,13 +1,34 @@
 import { useUser } from '../context/userContext';
 import React from 'react'
-import {Navigate} from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
+import { Button } from 'react-bootstrap';
 import Spinner from '../components/Spinner';
-export default function ProtectedRoute({children, location, ...rest}) {
-  const {isLoggedIn} = useUser();
-  if(!isLoggedIn) return <Spinner loading={!isLoggedIn} size={100}/>;
-  // if(!isLoggedIn) return null;
+export default function ProtectedRoute({ children, location, ...rest }) {
+  const { isLoggedIn, isDataLoading, isAdminLogin } = useUser();
+  if (isDataLoading) return <Spinner loading={isLoggedIn} size={100} />;
+  const [redirectToDefault, setRedirectToDefault] = React.useState(false);
+  const handleRedirect = () => {
+    setRedirectToDefault(true);
+  };
+  if (redirectToDefault) {
+    return <Navigate to="/" />;
+  }
+  if (isAdminLogin) {
+    // User is not an admin
+    return (
+      <div>
+        <h1 className='text-danger'>401</h1>
+        <h3>Unauthorized Access</h3>
+        <p>You need user privileges to access this page.</p>
+        <Button onClick={handleRedirect}>
+          Go To Default Page
+        </Button>
+      </div>
+    );
+  }
+
   return (
-   isLoggedIn?(children):(<Navigate to={{pathname:"/Login", state:{from:location}}}/>)
-    
+    isLoggedIn ? (children) : (<Navigate to={{ pathname: "/Login", state: { from: location } }} />)
+
   )
 }

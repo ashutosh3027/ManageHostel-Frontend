@@ -5,7 +5,6 @@ const UserProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [authData, setAuthData] = useState({ token: "" });
   const [userData, setUserData] = useState(null);
-  console.log(userData)
   const [isDataLoading, setIsDataLoading]=useState(true);
   const [isAdminLogin, setIsAdminLogin] = useState(false);
   useEffect(() => {

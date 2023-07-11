@@ -9,6 +9,10 @@ class BuildingService{
         const {data} = await API.get(`/buildings/${id}`);
         return data.data
     }
+    async createHostel(hostelName, collegeName){
+        const {data} = await API.post('/buildings/createBuilding', {buildingName:hostelName, collegeName});
+        return data.data;
+    }
 
   
 }

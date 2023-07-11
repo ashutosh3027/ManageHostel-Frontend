@@ -7,14 +7,16 @@ import Login from "./components/account/Login";
 import Register from "./components/account/Register";
 import ProtectedRoute from "./utils/ProtectedRoute.js";
 import "./App.css";
-import BookHostel from "./components/requests.js";
 import Hostels from "./components/Hostels";
 import Hostel from "./components/Hostel";
 import Spinner from "./components/Spinner";
-import RoomStatus from "./components/RoomStatus";
-import RequestStatus from "./components/RequestStatus";
-import RoomDetail from "./components/RoomDetail";
 import ForgetPassword from "./components/account/ForgetPassword";
+import NotFoundComponent from "./components/NotFoundComponent";
+import CreateColleges from "./components/CreateColleges";
+import CollegeDashboard from "./components/CollegeDashboard";
+import AdminHostel from "./components/AdminHostel";
+import AdminProtectedRoute from "./utils/AdminProtectedRoute";
+import AdminHostels from "./components/AdminHostels";
 const Home = lazy(() => import("./components/Home"));
 const Profile = lazy(() => import("./components/account/Profile.js"));
 function App() {
@@ -34,7 +36,6 @@ function App() {
               <Route path="/Login" element={<Login />}></Route>
               <Route path="/signup" element={<Register />}></Route>
               <Route path="/forgetPassword" element={<ForgetPassword />}></Route>
-              
               <Route
                 path="/profile"
                 element={
@@ -59,35 +60,36 @@ function App() {
                   </ProtectedRoute>
                 }
               ></Route>
-              <Route
-                path="/roomStatus"
-                element={
-                  <ProtectedRoute>
-                    <RoomStatus />{" "}
-                  </ProtectedRoute>
-                }
-              ></Route>
-              <Route
-                path="/requestStatus"
-                element={
-                  <ProtectedRoute>
-                    <RequestStatus />{" "}
-                  </ProtectedRoute>
-                }
-              ></Route>
-              <Route
-                path="/roomStatus/:id"
-                element={
-                  <ProtectedRoute>
-                    <RoomDetail />{" "}
-                  </ProtectedRoute>
-                }
-              ></Route>
+              <Route path="/admin/college" element={
+                <AdminProtectedRoute>
+                  <CreateColleges></CreateColleges>
+                </AdminProtectedRoute>} />
+              <Route path="admin/college/:id" element=
+                {
+                  <AdminProtectedRoute> <CollegeDashboard /></AdminProtectedRoute>
+                } />
+              <Route path="/admin/hostel/:id" element={
+                <AdminProtectedRoute>
+                  <AdminHostel />
+                </AdminProtectedRoute>
+              } />
+              <Route path="/admin/profile" element={
+                <AdminProtectedRoute>
+                  <Profile />
+                </AdminProtectedRoute>
+              } />
+              <Route path="/admin/hostels" element={
+                <AdminProtectedRoute>
+                  <AdminHostels />
+                </AdminProtectedRoute>
+              } />
+              <Route path="*" element={<NotFoundComponent />} />
             </Routes>
           </Suspense>
         </Router>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 }
 
