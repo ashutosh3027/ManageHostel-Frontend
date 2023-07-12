@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Form, Card, Col, Button } from "react-bootstrap";
+import { Form, Card, Col, Button,Spinner } from "react-bootstrap";
 import './../assets/css/hostels.css';
 import BuildingServices from '../services/buildingServices';
 import hostelImg from './../assets/images/hostel.jpeg'
@@ -9,6 +9,7 @@ export default function Hostels() {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [collegeList, setCollegeList] = useState([])
+    const [isLoading, setIsLoading] = useState(true);
     const handleSearch = () => {
         const filteredData = collegeList.filter(
             (data) =>
@@ -28,6 +29,7 @@ export default function Hostels() {
     }, [searchTerm, collegeList])
     useEffect(() => {
         (async () => {
+            setIsLoading(true);
             const tempData = await BuildingServices.getAllHostels();
             const tempCollegeList = [];
             tempData.map((data, index) => {
@@ -41,7 +43,8 @@ export default function Hostels() {
                 })
 
             })
-            setCollegeList(tempCollegeList)
+            setCollegeList(tempCollegeList);
+            setIsLoading(false);
 
         })()
     }, [])
@@ -69,7 +72,9 @@ export default function Hostels() {
                     </Col>
                 </div>
             </Form>
-
+            {isLoading?<Spinner animation='border' role='status'>
+                    <span className='visually-hidden'>Loading...</span>
+                </Spinner>:
             <div className='custom-hostel-list'>
                 {searchResults.length === 0 ? <p className='text-center'>No result found!!</p> : searchResults.map((data) => (
                     <Col key={data.id} sm={6} md={4} lg={3}>
@@ -92,7 +97,7 @@ export default function Hostels() {
                         </Link>
                     </Col>
                 ))}
-            </div>
+            </div>}
         </div>
     )
 }
