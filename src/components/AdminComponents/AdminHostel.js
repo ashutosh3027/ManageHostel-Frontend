@@ -5,13 +5,14 @@ import './../../assets/css/hostel.css';
 import { useRoom } from '../../context/roomContext';
 import { Spinner, Form, Button, Modal, Card } from 'react-bootstrap';
 import roomServices from '../../services/roomServices';
-
+import PulseLoader from "react-spinners/PulseLoader";
 export default function AdminHostel() {
     const [hostelId, setHostelId] = useState(useParams().id);
     const { roomData, updateRoomData, isRoomDataLoading } = useRoom();
     const [roomNumber, setRoomNumber] = useState(0);
     const [roomType, setRoomType] = useState('Single');
     const [showModal, setShowModal] = useState(false);
+    const [isRoomCreating, setIsRoomCreating] = useState(false);
     const [hostelDetails, setHostelDetails] = useState({
         name: '',
         vacantRooms: 0,
@@ -26,10 +27,13 @@ export default function AdminHostel() {
     const handleCreateRoom = async () => {
         // Make an API call here to create rooms
         // Pass numberOfRooms and roomType as parameters to the API
+        setIsRoomCreating(true)
         const data = await roomServices.createNewRoom(roomNumber, hostelId, roomType);
-        setShowModal(false);
         // Update the roomData state with the new data
         updateRoomData(hostelId);
+        setShowModal(false);
+        setIsRoomCreating(false);
+
     };
     useEffect(() => {
         // Calculate hostel details based on roomData
@@ -109,8 +113,9 @@ export default function AdminHostel() {
                     <Button variant='secondary' onClick={() => setShowModal(false)}>
                         Close
                     </Button>
-                    <Button variant='primary' onClick={handleCreateRoom}>
-                        Create
+                    <Button variant='primary' disabled={isRoomCreating} onClick={handleCreateRoom}>
+                        {isRoomCreating ? <PulseLoader size={10} loading={isRoomCreating} /> : ("Create")}
+                        
                     </Button>
                 </Modal.Footer>
             </Modal>
