@@ -12,11 +12,11 @@ import Hostel from "./components/Hostel";
 import Spinner from "./components/Spinner";
 import ForgetPassword from "./components/account/ForgetPassword";
 import NotFoundComponent from "./components/NotFoundComponent";
-import CreateColleges from "./components/CreateColleges";
-import CollegeDashboard from "./components/CollegeDashboard";
-import AdminHostel from "./components/AdminHostel";
+import CreateColleges from "./components/AdminComponents/CreateColleges";
+import CollegeDashboard from "./components/AdminComponents/CollegeDashboard";
+import AdminHostel from "./components/AdminComponents/AdminHostel";
 import AdminProtectedRoute from "./utils/AdminProtectedRoute";
-import AdminHostels from "./components/AdminHostels";
+import AdminHostels from "./components/AdminComponents/AdminHostels";
 const Home = lazy(() => import("./components/Home"));
 const Profile = lazy(() => import("./components/account/Profile.js"));
 function App() {

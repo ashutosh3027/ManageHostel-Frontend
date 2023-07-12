@@ -4,7 +4,7 @@ import { Spinner } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faTimes } from '@fortawesome/free-solid-svg-icons';
 import CreateHostels from './CreateHostels';
-import collegeServices from '../services/collegeServices';
+import collegeServices from '../../services/collegeServices';
 
 const CollegeDashboard = () => {
     // const college = {

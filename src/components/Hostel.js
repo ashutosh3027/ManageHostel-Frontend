@@ -10,6 +10,7 @@ import { Spinner } from 'react-bootstrap';
 export default function Hostel() {
     const [hostelId, setHostelId] = useState(useParams().id);
     const { roomData, updateRoomData, isRoomDataLoading } = useRoom();
+    
     useEffect(() => {
         updateRoomData(hostelId);
     }, [hostelId])

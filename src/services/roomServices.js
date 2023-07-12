@@ -30,5 +30,13 @@ class roomServices{
         const data = await API.post(`/rooms/vacant-room/${roomId}`);
         return data;
     }
+    async createNewRoom(roomNumber, buildingId, roomType){
+        const {data} = await API.post('/rooms/', {roomNumber, buildingId, roomType});
+        return data;
+    }
+    async deleteRoom(roomNumber, buildingId){
+        const {data} = await API.delete('/rooms/deleteRoom', {data:{roomNumber, buildingId}});
+        return data;
+    }
 }
 export default new roomServices();

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Form, Card, Col, Button, Spinner } from 'react-bootstrap';
-import './../assets/css/hostels.css';
-import BuildingServices from '../services/buildingServices';
-import hostelImg from './../assets/images/hostel.jpeg';
+import './../../assets/css/hostels.css';
+import BuildingServices from '../../services/buildingServices';
+import hostelImg from './../../assets/images/hostel.jpeg';
 
 export default function AdminHostels() {
     const [searchTerm, setSearchTerm] = useState('');

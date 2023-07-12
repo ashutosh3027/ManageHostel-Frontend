@@ -8,7 +8,6 @@ export default function AdminProtectedRoute({ children, location, ...rest }) {
     const { isLoggedIn, isAdminLogin, isDataLoading } = useUser();
     const [redirectToDefault, setRedirectToDefault] = React.useState(false);
     if (isDataLoading) {
-        // Data is loading
         return <Spinner loading={true} size={100} />;
     }
     const handleRedirect = () => {

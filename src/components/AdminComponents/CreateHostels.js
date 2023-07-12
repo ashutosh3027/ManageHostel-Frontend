@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Row, Col, Form, Button } from 'react-bootstrap';
 import ListComponent from './ListComponent';
 import ListGroup from 'react-bootstrap/ListGroup';
-import buildingServices from '../services/buildingServices';
+import buildingServices from '../../services/buildingServices';
 const HostelForm = ({ onSubmit }) => {
     const [HostelName, setHostelName] = useState('');
 

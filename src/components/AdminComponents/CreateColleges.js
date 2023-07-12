@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Row, Col, Form, Button, Spinner } from 'react-bootstrap';
 import ListComponent from './ListComponent';
 import ListGroup from 'react-bootstrap/ListGroup';
-import collegeServices from '../services/collegeServices';
+import collegeServices from '../../services/collegeServices';
 const CollegeForm = ({ onSubmit }) => {
     const [collegeName, setCollegeName] = useState('');
 
