@@ -35,10 +35,12 @@ const CollegeDashboard = () => {
             setIsCollegeDataLoading(true);
             const { collegeName } = await collegeServices.getCollege(collegeId)
             const hostels1 = await collegeServices.getAllBuildingsByCollegeId(collegeId);
+            console.log(hostels1)
             setCollege({ ...college, name: collegeName, hostels: [...hostels1] });
             setIsCollegeDataLoading(false);
         })()
     }, [collegeId]);
+    console.log(college)
     const [isEditingName, setIsEditingName] = useState(false);
     const [isEditingDescription, setIsEditingDescription] = useState(false);
     const [editedName, setEditedName] = useState(college.name);

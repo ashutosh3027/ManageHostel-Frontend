@@ -45,25 +45,19 @@ const HostelDetail = ({ hostel, index }) => {
                 <div className='col'>
                     <p className="m-0">{`${index + 1}. ${hostel.buildingName}`}</p>
                 </div>
-                <dic className='col'>
+                <div className='col'>
                     <Button variant="primary" size="sm" onClick={handleViewDetails}>
                         View Details
                     </Button>
-                </dic>
+                </div>
             </Row>
         </div>
     );
 };
 
 const CreateHostels = ({ college, setCollege }) => {
-    const [hostels, setHostels] = useState(college.hostels);
-    useEffect(()=>{
-        setHostels([...hostels, ...college.hostels]);
-    },[college])
-
     const handleCreateHostel = async (hostelName) => {
         const newHostel = await buildingServices.createHostel(hostelName, college.name);
-        setHostels([...hostels, newHostel]);
         setCollege({...college, hostels:[...college.hostels, newHostel]});
     };
     return (
@@ -75,10 +69,10 @@ const CreateHostels = ({ college, setCollege }) => {
                 <HostelForm onSubmit={handleCreateHostel} />
             </Row>
 
-            <ListComponent heading={'Hostels'} count={hostels.length}>
-                <ListGroup className="list-group-flush" style={{ "min-width": "50vw" }}>
-                    {hostels.map((hostel, idx) => (
-                        <ListGroup.Item className="p-1 text-left">
+            <ListComponent heading={'Hostels'} count={college.hostels.length}>
+                <ListGroup className="list-group-flush" style={{ "minWidth": "50vw" }}>
+                    {college.hostels.map((hostel, idx) => (
+                        <ListGroup.Item className="p-1 text-left" key={idx}>
                             <HostelDetail hostel={hostel} index={idx} key={idx} />
                         </ListGroup.Item>
                     ))}

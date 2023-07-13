@@ -11,6 +11,7 @@ class CollegeService{
     }
     async getAllBuildingsByCollegeId(collegeId){
         const {data} = await API.get(`/colleges/${collegeId}/buildings`);
+        console.log(data)
         return data.data.buildings;
     }
     async getCollege(collegeId){

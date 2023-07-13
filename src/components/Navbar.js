@@ -7,14 +7,21 @@ export default function Navbar() {
   const [click, setClick] = useState(false);
   const navigate = useNavigate();
   const { isLoggedIn, logout, isAdminLogin } = useUser();
-
-  const handleClick = (e) => {
+  const [activeLink, setActiveLink] = useState("Home");
+  const handleClick = (e, link) => {
     if (e.target.id === "logout") {
       logout();
       if (click) setClick(!click);
+      setActiveLink(link)
       return;
     }
-    setClick(!click);
+    console.log(e, link)
+    if(link!=="null")
+    setActiveLink(link);
+
+   
+    if(!click&&link==="null") setClick(true)
+    else if(click) setClick(!click);
   };
 
   const Close = () => setClick(false);
@@ -31,17 +38,20 @@ export default function Navbar() {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="nav-container">
-          <div className="nav-icon nav-icon-btn" onClick={handleClick}>
+          <div className="nav-icon nav-icon-btn" onClick={(e)=>{handleClick(e, 'null')}}>
             <i className={click ? "fa fa-times" : "fa fa-bars"}></i>
           </div>
-          <Link to="/" className="nav-logo">
+          <Link to="/" className="nav-logo" onClick={()=>{
+            setActiveLink("Home");
+            if(click) setClick(!click)
+          }}>
             &lt;ManageHostel/&gt;
           </Link>
           <ul
             className={
               click
-                ? "nav-menu active align-items-center justify-content-around m-auto"
-                : "nav-menu align-items-center justify-content-around m-auto"
+                ? "nav-menu active  m-auto"
+                : "nav-menu  m-auto"
             }
           >
             {!isLoggedIn && (
@@ -49,9 +59,10 @@ export default function Navbar() {
                 <li className="custom-nav-item custom-nav-item-link">
                   <Link
                     to="/"
-                    activeClassName="active"
-                    className="nav-links"
-                    onClick={click ? handleClick : null}
+                    className={`${activeLink === "Home" ? "active" : ""} nav-links`}
+                    onClick={(e) => {
+                      handleClick(e, "Home")
+                    }}
                   >
                     Home
                   </Link>
@@ -59,9 +70,10 @@ export default function Navbar() {
                 <li className="custom-nav-item custom-nav-item-link">
                   <Link
                     to="/about"
-                    activeClassName="active"
-                    className="nav-links"
-                    onClick={click ? handleClick : null}
+                    className={`${activeLink === "about" ? "active" : ""} nav-links`}
+                    onClick={(e) => {
+                      handleClick(e, "about")
+                    }}
                   >
                     About Us
                   </Link>
@@ -69,9 +81,10 @@ export default function Navbar() {
                 <li className="custom-nav-item custom-nav-item-link section">
                   <Link
                     to="/contact"
-                    activeClassName="active"
-                    className="nav-links"
-                    onClick={click ? handleClick : null}
+                    className={`${activeLink ==="contact" ? "active" : ""} nav-links`}
+                    onClick={(e) => {
+                      handleClick(e, "contact")
+                    }}
                   >
                     Contact Us
                   </Link>
@@ -81,7 +94,7 @@ export default function Navbar() {
                     onClick={(e) => {
                       navigate("/login");
                       if (click) {
-                        handleClick(e);
+                        handleClick(e, "login");
                       }
                     }}
                     className="custom-btn btn-default btn-rounded"
@@ -94,7 +107,7 @@ export default function Navbar() {
                     onClick={(e) => {
                       navigate("/signup");
                       if (click) {
-                        handleClick(e);
+                        handleClick(e, "signup");
                       }
                     }}
                     className="custom-btn btn-primary btn-rounded"
@@ -106,12 +119,13 @@ export default function Navbar() {
             )}
             {isLoggedIn && (
               <>
-                <li className="custom-nav-item custom-nav-item-link">
+                <li className="custom-nav-item custom-nav-item-link active">
                   <Link
                     to="/"
-                    activeClassName="active"
-                    className="nav-links"
-                    onClick={click ? handleClick : null}
+                    className={`${activeLink === "Home" ? "active" : ""} nav-links`}
+                    onClick={(e) => {
+                      handleClick(e, "Home")
+                    }}
                   >
                     Home
                   </Link>
@@ -121,19 +135,21 @@ export default function Navbar() {
                     <li className="custom-nav-item custom-nav-item-link">
                       <Link
                         to="/admin/profile"
-                        activeClassName="active"
-                        className="nav-links"
-                        onClick={click ? handleClick : null}
+                        className={`${activeLink === "profile" ? "active" : ""} nav-links`}
+                        onClick={(e) => {
+                          handleClick(e, "profile")
+                        }}
                       >
-                       Profile
+                        Profile
                       </Link>
                     </li>
                     <li className="custom-nav-item custom-nav-item-link">
                       <Link
                         to="/admin/users"
-                        activeClassName="active"
-                        className="nav-links"
-                        onClick={click ? handleClick : null}
+                        className={`${activeLink === "users" ? "active" : ""} nav-links`}
+                        onClick={(e) => {
+                          handleClick(e, "users")
+                        }}
                       >
                         Manage Users
                       </Link>
@@ -141,9 +157,10 @@ export default function Navbar() {
                     <li className="custom-nav-item custom-nav-item-link">
                       <Link
                         to="/admin/hostels"
-                        activeClassName="active"
-                        className="nav-links"
-                        onClick={click ? handleClick : null}
+                        className={`${activeLink === "hostels" ? "active" : ""} nav-links`}
+                        onClick={(e) => {
+                          handleClick(e, "hostels")
+                        }}
                       >
                         Manage Hostels
                       </Link>
@@ -154,9 +171,10 @@ export default function Navbar() {
                     <li className="custom-nav-item custom-nav-item-link">
                       <Link
                         to="/profile"
-                        activeClassName="active"
-                        className="nav-links"
-                        onClick={click ? handleClick : null}
+                        className={`${activeLink === "profile" ? "active" : ""} nav-links`}
+                        onClick={(e) => {
+                          handleClick(e, "profile")
+                        }}
                       >
                         My Profile
                       </Link>
@@ -164,9 +182,10 @@ export default function Navbar() {
                     <li className="custom-nav-item custom-nav-item-link">
                       <Link
                         to="/hostels"
-                        activeClassName="active"
-                        className="nav-links"
-                        onClick={click ? handleClick : null}
+                        className={`${activeLink === "hostels" ? "active" : ""} nav-links`}
+                        onClick={(e) => {
+                          handleClick(e, "hostels")
+                        }}
                       >
                         Hostels
                       </Link>
@@ -176,10 +195,11 @@ export default function Navbar() {
                 <li className="custom-nav-item custom-nav-item-link">
                   <Link
                     to="/"
-                    activeClassName="active"
-                    className="nav-links"
                     id="logout"
-                    onClick={handleClick}
+                    className={`${activeLink === "logout" ? "active" : ""} nav-links`}
+                    onClick={(e) => {
+                      handleClick(e, "Home")
+                    }}
                   >
                     Logout
                   </Link>
