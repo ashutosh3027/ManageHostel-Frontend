@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Pagination, Modal, Button } from 'react-bootstrap';
 import roomServices from '../services/roomServices';
 import './../assets/css/hostelMatrix.css';
+import PulseLoader from "react-spinners/PulseLoader";
 import { useUser } from '../context/userContext';
-import toast, { Toaster } from 'react-hot-toast';
 import { useRoom } from '../context/roomContext';
+import { toast } from 'react-toastify';
 const rowsPerPage = 10; // Number of rows per page
 const colsPerPage = 10; // Number of columns per page
 
@@ -12,29 +13,62 @@ const HostelMatrix = ({ seats }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState(undefined);
+  const [isBooking, setIsBooking] = useState(false);
   const { userData: user, updateUserData } = useUser();
-  const {updateRoomData} = useRoom();
+  const { updateRoomData } = useRoom();
   const totalSeats = seats.length;
   const totalRows = Math.ceil(totalSeats / colsPerPage);
   const totalPageCount = Math.ceil(totalRows / rowsPerPage);
-  console.log(seats)
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
   const bookRoom = async (roomNumber, buildingId) => {
     const userId = String(user.id);
+    setIsBooking(true);
     try {
-      const data = await roomServices.bookRoom(roomNumber, buildingId, userId);
-      toast.success('Room booked successfully!');
+      await roomServices.bookRoom(roomNumber, buildingId, userId);
+      toast.success("Room booked successfully", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+        draggable: true
+      });
       // Fetch the updated room data after booking
       updateRoomData(buildingId.id)
       updateUserData()
+      setShowModal(false);
+      setIsBooking(false);
       // Update user data and perform other actions
     } catch (error) {
-      console.log(error);
-      toast.error('Failed to book room!');
-      // Perform error handling
+      if (error.response && error.response.data && error.response.data.message) {
+        toast.error(`${error.response.data.message}`, {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 2000,
+          draggable: true
+        });
+      }
+      else if (error.response && error.response.data && error.response.data.error) {
+        toast.error(`${error.response.data.error}`, {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 2000,
+          draggable: true
+        });
+      }
+      else if (error.response && !error.response.data) {
+        toast.error(`Server Error`, {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 2000,
+          draggable: true
+        });
+      }
+      else {
+        toast.error(`${error.message}`, {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 2000,
+          draggable: true
+        });
+      }
+      setIsBooking(false);
     }
   };
 
@@ -66,7 +100,7 @@ const HostelMatrix = ({ seats }) => {
               className={seat.isAllocated ? 'col matrix-cell seat' : 'col matrix-cell seat empty-seat'}
               onClick={() => handleCellClick(seat)}
             >
-              {seat.roomNumber}
+              {`${seat.roomNumber}-${seat.roomType[0]}`}
             </div>
           );
         } else {
@@ -84,7 +118,7 @@ const HostelMatrix = ({ seats }) => {
 
   const handleBookingConfirm = (roomNumber, buildingId) => {
     bookRoom(roomNumber, buildingId);
-    setShowModal(false);
+    
   };
 
   return (
@@ -111,6 +145,7 @@ const HostelMatrix = ({ seats }) => {
           {selectedRoom && (
             <>
               <p>Room Number: {selectedRoom.roomNumber}</p>
+              <p>{`Room Type: ${selectedRoom.roomType}`}</p>
               {selectedRoom.allocatedTo && (
                 <p>Booked by: {selectedRoom.allocatedTo.name}</p>
               )}
@@ -126,9 +161,10 @@ const HostelMatrix = ({ seats }) => {
           {!selectedRoom.isAllocated && (
             <Button
               variant="primary"
+              disabled={isBooking}
               onClick={() => handleBookingConfirm(selectedRoom.roomNumber, selectedRoom.buildingId)}
             >
-              Book Room
+              {isBooking?<PulseLoader color={"#0a138b"} size={10} />:("Book Room")}
             </Button>
           )}
         </Modal.Footer>

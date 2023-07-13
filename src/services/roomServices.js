@@ -10,7 +10,6 @@ class roomServices{
     }
     async getAllRooms(){
         const {data}=await API.get('/rooms');
-        console.log(data);
         return data;
     }
     async getRoomByBuildingId(buildingId){
@@ -19,7 +18,6 @@ class roomServices{
     }
     async bookRoom(roomNumber, buildingId, userId){
         const data= await API.post('/rooms/book-room', {buildingId, roomNumber, userId});
-        console.log(data)
         return data;
     }
     async getRoomUser(roomId){

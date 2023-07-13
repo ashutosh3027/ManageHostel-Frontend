@@ -5,7 +5,7 @@ import Spinner from "./../Spinner";
 import PulseLoader from "react-spinners/PulseLoader";
 import authServices from "../../services/authServices";
 import roomServices from "../../services/roomServices";
-import toast, { Toaster } from "react-hot-toast";
+import { toast } from "react-toastify";
 
 export default function Profile() {
   const { userData: user, updateUserData } = useUser();
@@ -33,19 +33,49 @@ export default function Profile() {
 
   const vacantRoom = async (roomId) => {
     setIsVacating(true);
-    await roomServices.vacantRoom(roomId)
-      .then((data) => {
-        console.log(data);
-        // Handle success response
-        setIsVacating(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        // Handle error response
-        setIsVacating(false);
+    try {
+      await roomServices.vacantRoom(roomId)
+      setIsVacating(false);
+      updateUserData();
+      toast.success("Room Vacant Successfully", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+        draggable: true
       });
-    updateUserData();
-    
+    } catch (error) {
+      setIsVacating(false);
+      if (error.response && error.response.data && error.response.data.message) {
+        toast.error(`${error.response.data.message}`, {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 2000,
+          draggable: true
+        });
+      }
+      else if (error.response && error.response.data && error.response.data.error) {
+        toast.error(`${error.response.data.error}`, {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 2000,
+          draggable: true
+        });
+      }
+      else if (error.response && !error.response.data) {
+        toast.error(`Server Error`, {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 2000,
+          draggable: true
+        });
+      }
+      else {
+        toast.error(`${error.message}`, {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 2000,
+          draggable: true
+        });
+      }
+    }
+
+
+
   };
 
   return (
@@ -74,14 +104,13 @@ export default function Profile() {
 
           <div className="profile__items">
             <label>Password</label>
-            <button disable={isSending} onClick={resetPassword}>
+            <button disabled={isSending} onClick={resetPassword}>
               {isSending ? (
                 <PulseLoader color={"#0a138b"} size={10} />
               ) : (
                 "Reset password by email"
               )}
             </button>
-            <Toaster position="top-right" />
           </div>
 
           {user.isRoomAlloted ? (
@@ -100,7 +129,7 @@ export default function Profile() {
               />
               <div className="profile__items">
                 <label>Vacate Room</label>
-                <button disable={isVacating} onClick={() => vacantRoom(user.room[0].id)}>
+                <button disabled={isVacating} onClick={() => vacantRoom(user.room[0].id)}>
                   {isVacating ? (
                     <PulseLoader color={"#0a138b"} size={10} />
                   ) : (

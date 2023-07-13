@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
 import '../../assets/css/forgetPassword.css';
 import authServices from "../../services/authServices";
 import PulseLoader from "react-spinners/PulseLoader";
@@ -15,13 +14,11 @@ export default function ForgetPassword() {
     try{
         setIsSending(true);
         await authServices.forgotPassword(emailValue);
-        toast.success("Email has been sent successfully!!")
         setEmail('')
         setIsSending(false);
       }
       catch (error) {
         setIsSending(false);
-        toast.error("Something went wrong!!");
       }   
   };
 
@@ -40,7 +37,6 @@ export default function ForgetPassword() {
         </div>
         <div className="form_buttons">
         <p class="button-43" role="button"  onClick={() => doRequestPasswordReset()}> {isSending?<PulseLoader color={"#f5b921"} size={10} loading={isSending} />: `Reset Password`}</p>
-        <Toaster position="top-right" />
         </div>
       </div>
     </div>

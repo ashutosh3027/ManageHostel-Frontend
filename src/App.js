@@ -17,6 +17,8 @@ import CollegeDashboard from "./components/AdminComponents/CollegeDashboard";
 import AdminHostel from "./components/AdminComponents/AdminHostel";
 import AdminProtectedRoute from "./utils/AdminProtectedRoute";
 import AdminHostels from "./components/AdminComponents/AdminHostels";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Home = lazy(() => import("./components/Home"));
 const Profile = lazy(() => import("./components/account/Profile.js"));
 function App() {
@@ -89,6 +91,7 @@ function App() {
         </Router>
       )
       }
+      <ToastContainer />
     </div >
   );
 }

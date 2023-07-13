@@ -1,16 +1,17 @@
 import React, { useState } from "react";
-import { Link, Navigate} from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import "./../../assets/css/login.css";
 // import "./../../assets/css/adminLogin.css"
 import loginImg from './../../assets/images/login.gif';
 import authServices from "../../services/authServices";
 import { useUser } from "../../context/userContext";
 import PulseLoader from "react-spinners/PulseLoader";
+import { toast } from "react-toastify";
 export default function Login() {
   const [formData, updateFormData] = useState({});
-  const { setUserState, isLoggedIn} = useUser();
-  const [isLoading, setIsLoading]= useState(false); 
-  const [redirectToReferrer, setRedirectToReferrer]=useState(0);
+  const { setUserState, isLoggedIn } = useUser();
+  const [isLoading, setIsLoading] = useState(false);
+  const [redirectToReferrer, setRedirectToReferrer] = useState(0);
   const handleChanges = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -20,24 +21,57 @@ export default function Login() {
     updateFormData({ ...formData, [name]: value });
   };
   const handleLogin = async () => {
-    try{
+    try {
       setIsLoading(true);
       const { email, password } = formData;
       const res = await authServices.login(email, password);
       const { data } = res;
       setUserState(data);
-      setRedirectToReferrer((prv)=>(prv+1));
+      setRedirectToReferrer((prv) => (prv + 1));
       setIsLoading(false);
+      toast.success("Login Success", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+        draggable: true
+      });
     }
     catch (error) {
+      if (error.response && error.response.data && error.response.data.message) {
+        toast.error(`${error.response.data.message}`, {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 2000,
+          draggable: true
+        });
+      }
+      else if(error.response && error.response.data && error.response.data.error){
+        toast.error(`${error.response.data.error}`, {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 2000,
+          draggable: true
+        });
+      }
+      else if(error.response&&!error.response.data){
+        toast.error(`Server Error`, {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 2000,
+          draggable: true
+        });
+      }
+      else {
+        toast.error(`${error.message}`, {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 2000,
+          draggable: true
+        });
+      }
       setIsLoading(false);
     }
-  
+
   };
   if (redirectToReferrer) {
     return (<Navigate to="/" />);
   }
-  if(isLoggedIn){
+  if (isLoggedIn) {
     return (<Navigate to="/" />);
   }
   return (
@@ -69,7 +103,7 @@ const Form = (props) => (
       name="password"
       handleChanges={props.handleChanges}
     />
-    <FormButton title="Log in" handleLogin={props.handleLogin} isLoading={props.isLoading} setIsLoading={props.setIsLoading}/>
+    <FormButton title="Log in" handleLogin={props.handleLogin} isLoading={props.isLoading} setIsLoading={props.setIsLoading} />
     <div className="message">
       <div>
         <a href="/forgetPassword">Forgot your password</a>
@@ -80,13 +114,13 @@ const Form = (props) => (
 
 const FormButton = (props) => (
   <div id="button" className="coustom-row">
-    <button onClick={props.handleLogin} disabled={props.isLoading}>{props.isLoading? <PulseLoader color={"#f5b921"} size={10} loading={props.isLoading} />:(props.title)}</button>
+    <button onClick={props.handleLogin} disabled={props.isLoading}>{props.isLoading ? <PulseLoader color={"#f5b921"} size={10} loading={props.isLoading} /> : (props.title)}</button>
   </div>
 );
 
 const FormInput = (props) => (
   <div className="coustom-row">
-     <label>{props.description}</label>
+    <label>{props.description}</label>
     <input
       type={props.type}
       placeholder={props.placeholder}

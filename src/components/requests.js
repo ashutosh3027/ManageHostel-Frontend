@@ -4,7 +4,6 @@ import authServices from "./../services/authServices";
 import Spinner from "../components/Spinner";
 import { useUser } from "../context/userContext";
 import roomServices from "./../services/roomServices";
-import toast, { Toaster } from "react-hot-toast";
 
 export default function requests() {
   const [roomData, setRoomData] = React.useState(null);
@@ -108,7 +107,6 @@ export default function requests() {
                       >
                         Apply
                       </button>
-                      <Toaster position="top-right" />
                     </div>
                   }
                 </td>

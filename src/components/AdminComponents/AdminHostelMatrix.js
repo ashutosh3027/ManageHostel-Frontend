@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Pagination, Modal, Button } from 'react-bootstrap';
 import roomServices from '../../services/roomServices';
 import './../../assets/css/hostelMatrix.css';
-import { useUser } from '../../context/userContext';
-import toast, { Toaster } from 'react-hot-toast';
 import { useRoom } from '../../context/roomContext';
 import PulseLoader from "react-spinners/PulseLoader";
 const rowsPerPage = 10; // Number of rows per page
@@ -66,7 +64,7 @@ const HostelMatrix = ({ seats }) => {
                             className={seat.isAllocated ? 'col matrix-cell seat' : 'col matrix-cell seat empty-seat'}
                             onClick={() => handleCellClick(seat)}
                         >
-                            {seat.roomNumber}
+                            {`${seat.roomNumber}-${seat.roomType[0]}`}
                         </div>
                     );
                 } else {

@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import roomServices from "../services/roomServices";
 import { useUser } from "./userContext";
+import { toast } from "react-toastify";
 const RoomContext = createContext();
 
 const RoomProvider = ({ children }) => {
@@ -11,10 +12,44 @@ const RoomProvider = ({ children }) => {
   const updateRoomData = (hostelId) => {
     (async () => {
       setIsRoomDataLoading(true);
-      const roomList = await roomServices.getRoomByBuildingId(hostelId)
-      console.log(roomList)
-      setRoomData([...roomList]);
-      setIsRoomDataLoading(false);
+      try {
+        const roomList = await roomServices.getRoomByBuildingId(hostelId)
+        setRoomData([...roomList]);
+        setIsRoomDataLoading(false);
+
+      } catch (error) {
+        setIsRoomDataLoading(false);
+        console.log(error)
+        if (error.response && error.response.data && error.response.data.message) {
+          toast.error(`${error.response.data.message}`, {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 2000,
+            draggable: true
+          });
+        }
+        else if (error.response && error.response.data && error.response.data.error) {
+          toast.error(`${error.response.data.error}`, {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 2000,
+            draggable: true
+          });
+        }
+        else if (error.response && !error.response.data) {
+          toast.error(`Server Error`, {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 2000,
+            draggable: true
+          });
+        }
+        else {
+          toast.error(`${error.message}`, {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 2000,
+            draggable: true
+          });
+        }
+      }
+
     })()
   }
   useEffect(() => {

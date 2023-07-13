@@ -4,7 +4,7 @@ import { Form, Card, Col, Button, Spinner } from 'react-bootstrap';
 import './../../assets/css/hostels.css';
 import BuildingServices from '../../services/buildingServices';
 import hostelImg from './../../assets/images/hostel.jpeg';
-
+import { toast } from "react-toastify";
 export default function AdminHostels() {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
@@ -33,20 +33,35 @@ export default function AdminHostels() {
         );
         setSearchResults(filteredData);
     }, [searchTerm, collegeList]);
-
     useEffect(() => {
         (async () => {
             setIsLoading(true); // Set loading state to true
-            const tempData = await BuildingServices.getAllHostels();
-            const tempCollegeList = tempData.map((data, index) => ({
-                id: index,
-                collegeName: data.college.collegeName,
-                hostelName: data.buildingName,
-                collegeId: data.collegeId,
-                imageUrl: hostelImg,
-                hostelId: data.id,
-            }));
-            setCollegeList(tempCollegeList);
+            try {
+                const tempData = await BuildingServices.getAllHostels();
+                // toast.success("Success Notification!", {
+                //     position: toast.POSITION.TOP_RIGHT,
+                //     autoClose: 3000,
+                //     draggable:true
+                // });
+                const tempCollegeList = tempData.map((data, index) => ({
+                    id: index,
+                    collegeName: data.college.collegeName,
+                    hostelName: data.buildingName,
+                    collegeId: data.collegeId,
+                    imageUrl: hostelImg,
+                    hostelId: data.id,
+                }));
+                setCollegeList(tempCollegeList);
+                setIsLoading(false); // Set loading state to false after data is fetched
+            } catch (error) {
+                console.log(error)
+                toast.error("Error Notification!", {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 20000
+                });
+                setIsLoading(false); // Set loading state to false after data is fetched
+            }
+
             setIsLoading(false); // Set loading state to false after data is fetched
         })();
     }, []);
@@ -100,7 +115,7 @@ export default function AdminHostels() {
                                                 <span>{data.hostelName}</span>
                                             </Card.Title>
                                             <Link
-                                                to={`/collegs/${data.collegeId}`}
+                                                to={`/admin/college/${data.collegeId}`}
                                                 className='normal-text'
                                             >
                                                 <Card.Text className='card_details'>

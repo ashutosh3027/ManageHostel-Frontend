@@ -1,12 +1,12 @@
 import { useUser } from '../context/userContext';
-import React from 'react'
+import React, {useState} from 'react'
 import { Navigate } from 'react-router-dom'
 import { Button } from 'react-bootstrap';
 import Spinner from '../components/Spinner';
 export default function ProtectedRoute({ children, location, ...rest }) {
   const { isLoggedIn, isDataLoading, isAdminLogin } = useUser();
+  const [redirectToDefault, setRedirectToDefault] = useState(false);
   if (isDataLoading) return <Spinner loading={isLoggedIn} size={100} />;
-  const [redirectToDefault, setRedirectToDefault] = React.useState(false);
   const handleRedirect = () => {
     setRedirectToDefault(true);
   };
