@@ -4,7 +4,9 @@ import { Row, Col, Form, Button, Spinner } from 'react-bootstrap';
 import ListComponent from './ListComponent';
 import ListGroup from 'react-bootstrap/ListGroup';
 import collegeServices from '../../services/collegeServices';
-const CollegeForm = ({ onSubmit }) => {
+import { toast } from 'react-toastify';
+import PulseLoader from "react-spinners/PulseLoader";
+const CollegeForm = ({ onSubmit,isCreatingRoom }) => {
     const [collegeName, setCollegeName] = useState('');
 
     const handleSubmit = (e) => {
@@ -25,8 +27,8 @@ const CollegeForm = ({ onSubmit }) => {
                     />
                 </Row>
                 <Row>
-                    <Button type="submit" variant="primary">
-                        Create College
+                    <Button type="submit" disabled={isCreatingRoom} variant="primary">
+                       {isCreatingRoom?<PulseLoader color={"#0a138b"} size={10} />:("Create College")}
                     </Button>
                 </Row>
             </Col>
@@ -59,17 +61,91 @@ const CollegeDetail = ({ college, onAddBuilding, index }) => {
 const CreateCollegesPage = () => {
     const [colleges, setColleges] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [isCreatingRoom, setIsCreatingRoom] = useState(false)
     useEffect(() => {
         (async () => {
             setIsLoading(true);
-            const data = await collegeServices.getAllColleges();
-            setColleges([...data]);
-            setIsLoading(false);
+            try {
+                const data = await collegeServices.getAllColleges();
+                setColleges([...data]);
+                setIsLoading(false);
+            } catch (error) {
+                setIsLoading(false);
+                if (error.response && error.response.data && error.response.data.message) {
+                    toast.error(`${error.response.data.message}`, {
+                        position: toast.POSITION.TOP_CENTER,
+                        autoClose: 2000,
+                        draggable: true
+                    });
+                }
+                else if (error.response && error.response.data && error.response.data.error) {
+                    toast.error(`${error.response.data.error}`, {
+                        position: toast.POSITION.TOP_CENTER,
+                        autoClose: 2000,
+                        draggable: true
+                    });
+                }
+                else if (error.response && !error.response.data) {
+                    toast.error(`Server Error`, {
+                        position: toast.POSITION.TOP_CENTER,
+                        autoClose: 2000,
+                        draggable: true
+                    });
+                }
+                else {
+                    toast.error(`${error.message}`, {
+                        position: toast.POSITION.TOP_CENTER,
+                        autoClose: 2000,
+                        draggable: true
+                    });
+                }
+            }
+
         })()
     }, [])
     const handleCreateCollege = async (collegeName) => {
-        const newCollege = await collegeServices.createCollege(collegeName);
-        setColleges([...colleges, newCollege]);
+        setIsCreatingRoom(true)
+        try {
+            const newCollege = await collegeServices.createCollege(collegeName);
+            setColleges([...colleges, newCollege]);
+            setIsCreatingRoom(false);
+            toast.success("College Created Successfully", {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: 2000,
+                draggable: true
+            });
+        } catch (error) {
+            setIsCreatingRoom(false);
+            if (error.response && error.response.data && error.response.data.message) {
+                toast.error(`${error.response.data.message}`, {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 2000,
+                    draggable: true
+                });
+            }
+            else if (error.response && error.response.data && error.response.data.error) {
+                toast.error(`${error.response.data.error}`, {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 2000,
+                    draggable: true
+                });
+            }
+            else if (error.response && !error.response.data) {
+                toast.error(`Server Error`, {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 2000,
+                    draggable: true
+                });
+            }
+            else {
+                toast.error(`${error.message}`, {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 2000,
+                    draggable: true
+                });
+            }
+        }
+
     };
 
     return (
@@ -83,7 +159,7 @@ const CreateCollegesPage = () => {
             </Spinner> :
                 <>
                     <Row>
-                        <CollegeForm onSubmit={handleCreateCollege} />
+                        <CollegeForm onSubmit={handleCreateCollege} isCreatingRoom={isCreatingRoom} />
                     </Row>
                     <ListComponent heading={'Colleges'} count={colleges.length}>
                         <ListGroup className="list-group-flush" style={{ "minWidth": "50vw" }}>

@@ -1,14 +1,11 @@
-import React, {
-    useEffect,
-    useState
-} from 'react';
+import React, {useEffect} from 'react';
 import { useParams } from 'react-router-dom';
 import HostelMatrix from './HostelMatrix';
 import './../assets/css/hostel.css';
 import { useRoom } from '../context/roomContext';
 import { Spinner } from 'react-bootstrap';
 export default function Hostel() {
-    const [hostelId, setHostelId] = useState(useParams().id);
+    const {id:hostelId} = useParams();
     const { roomData, updateRoomData, isRoomDataLoading } = useRoom();
     
     useEffect(() => {

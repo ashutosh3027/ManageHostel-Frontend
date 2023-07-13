@@ -6,8 +6,9 @@ import { useRoom } from '../../context/roomContext';
 import { Spinner, Form, Button, Modal, Card } from 'react-bootstrap';
 import roomServices from '../../services/roomServices';
 import PulseLoader from "react-spinners/PulseLoader";
+import { toast } from 'react-toastify';
 export default function AdminHostel() {
-    const [hostelId, setHostelId] = useState(useParams().id);
+    const { id:hostelId } = useParams();
     const { roomData, updateRoomData, isRoomDataLoading } = useRoom();
     const [roomNumber, setRoomNumber] = useState(0);
     const [roomType, setRoomType] = useState('Single');
@@ -28,11 +29,50 @@ export default function AdminHostel() {
         // Make an API call here to create rooms
         // Pass numberOfRooms and roomType as parameters to the API
         setIsRoomCreating(true)
-        const data = await roomServices.createNewRoom(roomNumber, hostelId, roomType);
-        // Update the roomData state with the new data
-        updateRoomData(hostelId);
-        setShowModal(false);
-        setIsRoomCreating(false);
+        try {
+            await roomServices.createNewRoom(roomNumber, hostelId, roomType);
+            // Update the roomData state with the new data
+            updateRoomData(hostelId);
+            setShowModal(false);
+            setIsRoomCreating(false);
+            toast.success("Room Created Successfully", {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: 2000,
+                draggable: true
+            });
+
+        } catch (error) {
+            setIsRoomCreating(false);
+            if (error.response && error.response.data && error.response.data.message) {
+                toast.error(`${error.response.data.message}`, {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 2000,
+                    draggable: true
+                });
+            }
+            else if (error.response && error.response.data && error.response.data.error) {
+                toast.error(`${error.response.data.error}`, {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 2000,
+                    draggable: true
+                });
+            }
+            else if (error.response && !error.response.data) {
+                toast.error(`Server Error`, {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 2000,
+                    draggable: true
+                });
+            }
+            else {
+                toast.error(`${error.message}`, {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 2000,
+                    draggable: true
+                });
+            }
+        }
+
 
     };
     useEffect(() => {
@@ -115,7 +155,7 @@ export default function AdminHostel() {
                     </Button>
                     <Button variant='primary' disabled={isRoomCreating} onClick={handleCreateRoom}>
                         {isRoomCreating ? <PulseLoader size={10} loading={isRoomCreating} /> : ("Create")}
-                        
+
                     </Button>
                 </Modal.Footer>
             </Modal>

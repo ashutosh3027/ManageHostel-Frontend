@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faTimes } from '@fortawesome/free-solid-svg-icons';
 import CreateHostels from './CreateHostels';
 import collegeServices from '../../services/collegeServices';
-
+import { toast } from 'react-toastify';
 const CollegeDashboard = () => {
     // const college = {
     //     name: "College G",
@@ -28,19 +28,51 @@ const CollegeDashboard = () => {
         hostels: []
     }
     const [college, setCollege] = useState(temp);
-    const [collegeId, setCollegeId] = useState(useParams().id);
+    const {id:collegeId} =useParams();
     const [isCollegeDataLoading, setIsCollegeDataLoading] = useState(true);
     useEffect(() => {
         (async () => {
             setIsCollegeDataLoading(true);
-            const { collegeName } = await collegeServices.getCollege(collegeId)
-            const hostels1 = await collegeServices.getAllBuildingsByCollegeId(collegeId);
-            console.log(hostels1)
-            setCollege({ ...college, name: collegeName, hostels: [...hostels1] });
-            setIsCollegeDataLoading(false);
+            try {
+
+                const { collegeName } = await collegeServices.getCollege(collegeId)
+                const hostels1 = await collegeServices.getAllBuildingsByCollegeId(collegeId);
+                setCollege({ ...college, name: collegeName, hostels: [...hostels1] });
+                setIsCollegeDataLoading(false);
+            } catch (error) {
+                setIsCollegeDataLoading(false);
+                if (error.response && error.response.data && error.response.data.message) {
+                    toast.error(`${error.response.data.message}`, {
+                        position: toast.POSITION.TOP_CENTER,
+                        autoClose: 2000,
+                        draggable: true
+                    });
+                }
+                else if (error.response && error.response.data && error.response.data.error) {
+                    toast.error(`${error.response.data.error}`, {
+                        position: toast.POSITION.TOP_CENTER,
+                        autoClose: 2000,
+                        draggable: true
+                    });
+                }
+                else if (error.response && !error.response.data) {
+                    toast.error(`Server Error`, {
+                        position: toast.POSITION.TOP_CENTER,
+                        autoClose: 2000,
+                        draggable: true
+                    });
+                }
+                else {
+                    toast.error(`${error.message}`, {
+                        position: toast.POSITION.TOP_CENTER,
+                        autoClose: 2000,
+                        draggable: true
+                    });
+                }
+            }
+
         })()
     }, [collegeId]);
-    console.log(college)
     const [isEditingName, setIsEditingName] = useState(false);
     const [isEditingDescription, setIsEditingDescription] = useState(false);
     const [editedName, setEditedName] = useState(college.name);

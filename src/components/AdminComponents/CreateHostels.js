@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Row, Col, Form, Button } from 'react-bootstrap';
 import ListComponent from './ListComponent';
 import ListGroup from 'react-bootstrap/ListGroup';
 import buildingServices from '../../services/buildingServices';
-const HostelForm = ({ onSubmit }) => {
+import { toast } from 'react-toastify';
+import PulseLoader from "react-spinners/PulseLoader";
+const HostelForm = ({ onSubmit,isHostelCreating }) => {
     const [HostelName, setHostelName] = useState('');
 
     const handleSubmit = (e) => {
@@ -25,8 +27,8 @@ const HostelForm = ({ onSubmit }) => {
                     />
                 </Row>
                 <Row>
-                    <Button type="submit" variant="primary">
-                        Create Hostel
+                    <Button type="submit" disabled={isHostelCreating} variant="primary">
+                        {isHostelCreating? <PulseLoader color={"#0a138b"} size={10} />:("Create Hostel")}
                     </Button>
                 </Row>
             </Col>
@@ -56,9 +58,51 @@ const HostelDetail = ({ hostel, index }) => {
 };
 
 const CreateHostels = ({ college, setCollege }) => {
+    const [isHostelCreating, setIsHostelCreating] = useState(false);
     const handleCreateHostel = async (hostelName) => {
-        const newHostel = await buildingServices.createHostel(hostelName, college.name);
-        setCollege({...college, hostels:[...college.hostels, newHostel]});
+        setIsHostelCreating(true);
+        try {
+            const newHostel = await buildingServices.createHostel(hostelName, college.name);
+            setCollege({ ...college, hostels: [...college.hostels, newHostel] });
+            setIsHostelCreating(false);
+            toast.success("Hostel Created Successfully", {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: 2000,
+                draggable: true
+            });
+
+        } catch (error) {
+            setIsHostelCreating(false);
+            if (error.response && error.response.data && error.response.data.message) {
+                toast.error(`${error.response.data.message}`, {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 2000,
+                    draggable: true
+                });
+            }
+            else if (error.response && error.response.data && error.response.data.error) {
+                toast.error(`${error.response.data.error}`, {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 2000,
+                    draggable: true
+                });
+            }
+            else if (error.response && !error.response.data) {
+                toast.error(`Server Error`, {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 2000,
+                    draggable: true
+                });
+            }
+            else {
+                toast.error(`${error.message}`, {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 2000,
+                    draggable: true
+                });
+            }
+        }
+
     };
     return (
         <div className='flex-column mt-5'>
@@ -66,7 +110,7 @@ const CreateHostels = ({ college, setCollege }) => {
                 <h2>Create Hostels</h2>
             </Row>
             <Row>
-                <HostelForm onSubmit={handleCreateHostel} />
+                <HostelForm onSubmit={handleCreateHostel} isHostelCreating={isHostelCreating}/>
             </Row>
 
             <ListComponent heading={'Hostels'} count={college.hostels.length}>

@@ -54,9 +54,41 @@ const RoomProvider = ({ children }) => {
   }
   useEffect(() => {
     const getRooms = async () => {
-      const { data } = await roomServices.getAllRooms();
-      const res = data.rooms;
-      setAllRooms((prv) => ([...prv, ...res]));
+      try {
+        const { data } = await roomServices.getAllRooms();
+        const res = data.rooms;
+        setAllRooms((prv) => ([...prv, ...res]));
+      } catch (error) {
+        if (error.response && error.response.data && error.response.data.message) {
+          toast.error(`${error.response.data.message}`, {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 2000,
+            draggable: true
+          });
+        }
+        else if (error.response && error.response.data && error.response.data.error) {
+          toast.error(`${error.response.data.error}`, {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 2000,
+            draggable: true
+          });
+        }
+        else if (error.response && !error.response.data) {
+          toast.error(`Server Error`, {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 2000,
+            draggable: true
+          });
+        }
+        else {
+          toast.error(`${error.message}`, {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 2000,
+            draggable: true
+          });
+        }
+      }
+
     }
     if (isAdminLogin) {
       getRooms();

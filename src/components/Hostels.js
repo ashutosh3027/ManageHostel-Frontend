@@ -32,51 +32,25 @@ export default function Hostels() {
             setIsLoading(true);
             try {
                 const tempData = await BuildingServices.getAllHostels();
-                const tempCollegeList = [];
-                tempData.map((data, index) => {
-                    tempCollegeList.push({
-                        id: index,
-                        collegeName: data.college.collegeName,
-                        hostelName: data.buildingName,
-                        collegeId: data.collegeId,
-                        imageUrl: hostelImg,
-                        hostelId: data.id
-                    })
-
-                })
+                const tempCollegeList = tempData.map((data, index) => ({
+                    id: index,
+                    collegeName: data.college.collegeName,
+                    hostelName: data.buildingName,
+                    collegeId: data.collegeId,
+                    imageUrl: hostelImg,
+                    hostelId: data.id,
+                }));
                 setCollegeList(tempCollegeList);
                 setIsLoading(false);
 
             } catch (error) {
                 setIsLoading(false);
-                if (error.response && error.response.data && error.response.data.message) {
-                    toast.error(`${error.response.data.message}`, {
-                        position: toast.POSITION.TOP_CENTER,
-                        autoClose: 2000,
-                        draggable: true
-                    });
-                }
-                else if (error.response && error.response.data && error.response.data.error) {
-                    toast.error(`${error.response.data.error}`, {
-                        position: toast.POSITION.TOP_CENTER,
-                        autoClose: 2000,
-                        draggable: true
-                    });
-                }
-                else if (error.response && !error.response.data) {
-                    toast.error(`Server Error`, {
-                        position: toast.POSITION.TOP_CENTER,
-                        autoClose: 2000,
-                        draggable: true
-                    });
-                }
-                else {
-                    toast.error(`${error.message}`, {
-                        position: toast.POSITION.TOP_CENTER,
-                        autoClose: 2000,
-                        draggable: true
-                    });
-                }
+                const errorMessage = error.response?.data?.error || error.response?.data?.message || 'Server Error';
+                toast.error(errorMessage, {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 2000,
+                    draggable: true,
+                });
             }
 
 
@@ -135,50 +109,3 @@ export default function Hostels() {
         </div>
     )
 }
-
-    // const dummyData = [
-    //     {
-    //         id: 1,
-    //         hostelName: 'Hostel A',
-    //         collegeName: 'College X',
-    //         imageUrl: hostelImg,
-    //     },
-    //     {
-    //         id: 2,
-    //         hostelName: 'Hostel B',
-    //         collegeName: 'College Y',
-    //         imageUrl: hostelImg,
-    //     },
-    //     {
-    //         id: 3,
-    //         hostelName: 'Hostel C',
-    //         collegeName: 'College Z',
-    //         imageUrl: hostelImg,
-    //     },
-    //     {
-    //         id: 3,
-    //         hostelName: 'Hostel C',
-    //         collegeName: 'College Z',
-    //         imageUrl: hostelImg,
-    //     }, {
-    //         id: 3,
-    //         hostelName: 'Hostel C',
-    //         collegeName: 'College Z',
-    //         imageUrl: hostelImg,
-    //     }, {
-    //         id: 3,
-    //         hostelName: 'Hostel C',
-    //         collegeName: 'College Z',
-    //         imageUrl: hostelImg,
-    //     }, {
-    //         id: 3,
-    //         hostelName: 'Hostel C',
-    //         collegeName: 'College Z',
-    //         imageUrl: hostelImg,
-    //     }, {
-    //         id: 3,
-    //         hostelName: 'Hostel C',
-    //         collegeName: 'College Z',
-    //         imageUrl: hostelImg,
-    //     },
-    // ];

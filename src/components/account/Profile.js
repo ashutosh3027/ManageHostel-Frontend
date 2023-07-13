@@ -37,7 +37,7 @@ export default function Profile() {
       await roomServices.vacantRoom(roomId)
       setIsVacating(false);
       updateUserData();
-      toast.success("Room Vacant Successfully", {
+      toast.success("Room Vacated Successfully", {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 2000,
         draggable: true

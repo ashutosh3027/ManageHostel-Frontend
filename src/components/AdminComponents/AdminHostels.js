@@ -54,15 +54,38 @@ export default function AdminHostels() {
                 setCollegeList(tempCollegeList);
                 setIsLoading(false); // Set loading state to false after data is fetched
             } catch (error) {
-                console.log(error)
-                toast.error("Error Notification!", {
-                    position: toast.POSITION.TOP_CENTER,
-                    autoClose: 20000
-                });
-                setIsLoading(false); // Set loading state to false after data is fetched
+                setIsLoading(false);
+                if (error.response && error.response.data && error.response.data.message) {
+                    toast.error(`${error.response.data.message}`, {
+                        position: toast.POSITION.TOP_CENTER,
+                        autoClose: 2000,
+                        draggable: true
+                    });
+                }
+                else if (error.response && error.response.data && error.response.data.error) {
+                    toast.error(`${error.response.data.error}`, {
+                        position: toast.POSITION.TOP_CENTER,
+                        autoClose: 2000,
+                        draggable: true
+                    });
+                }
+                else if (error.response && !error.response.data) {
+                    toast.error(`Server Error`, {
+                        position: toast.POSITION.TOP_CENTER,
+                        autoClose: 2000,
+                        draggable: true
+                    });
+                }
+                else {
+                    toast.error(`${error.message}`, {
+                        position: toast.POSITION.TOP_CENTER,
+                        autoClose: 2000,
+                        draggable: true
+                    });
+                }
             }
 
-            setIsLoading(false); // Set loading state to false after data is fetched
+           
         })();
     }, []);
 

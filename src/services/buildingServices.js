@@ -16,4 +16,5 @@ class BuildingService{
 
   
 }
-export default new BuildingService();
+const buildingObj =  new BuildingService()
+export default buildingObj;

@@ -37,4 +37,5 @@ class roomServices{
         return data;
     }
 }
-export default new roomServices();
+const roomObj = new roomServices();
+export default roomObj;

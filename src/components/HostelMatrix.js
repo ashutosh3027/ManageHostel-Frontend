@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import { Pagination, Modal, Button } from 'react-bootstrap';
 import roomServices from '../services/roomServices';
 import './../assets/css/hostelMatrix.css';

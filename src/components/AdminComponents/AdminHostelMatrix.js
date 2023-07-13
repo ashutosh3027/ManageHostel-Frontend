@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Pagination, Modal, Button } from 'react-bootstrap';
 import roomServices from '../../services/roomServices';
 import './../../assets/css/hostelMatrix.css';
 import { useRoom } from '../../context/roomContext';
 import PulseLoader from "react-spinners/PulseLoader";
+import { toast } from 'react-toastify';
 const rowsPerPage = 10; // Number of rows per page
 const colsPerPage = 10; // Number of columns per page
 
@@ -22,18 +23,49 @@ const HostelMatrix = ({ seats }) => {
     };
     const vacantRoom = async (roomId, building) => {
         setIsUnallocating(true);
-        await roomServices.vacantRoom(roomId)
-            .then((data) => {
-                console.log(data);
-                updateRoomData(building.id)
-                // Handle success response
-                setIsUnallocating(false);
-            })
-            .catch((error) => {
-                console.log(error);
-                // Handle error response
-                setIsUnallocating(false);
+        try {
+            const data = await roomServices.vacantRoom(roomId)
+            console.log(data);
+            updateRoomData(building.id)
+            // Handle success response
+            setIsUnallocating(false);
+            toast.success("Room Vacated Successfully", {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: 2000,
+                draggable: true
             });
+        } catch (error) {
+            setIsUnallocating(false);
+            if (error.response && error.response.data && error.response.data.message) {
+                toast.error(`${error.response.data.message}`, {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 2000,
+                    draggable: true
+                });
+            }
+            else if (error.response && error.response.data && error.response.data.error) {
+                toast.error(`${error.response.data.error}`, {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 2000,
+                    draggable: true
+                });
+            }
+            else if (error.response && !error.response.data) {
+                toast.error(`Server Error`, {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 2000,
+                    draggable: true
+                });
+            }
+            else {
+                toast.error(`${error.message}`, {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 2000,
+                    draggable: true
+                });
+            }
+        }
+
     };
 
     const handleCellClick = (seat) => {
@@ -84,12 +116,44 @@ const HostelMatrix = ({ seats }) => {
         setIsdeleteingRoom(true);
         try {
             await roomServices.deleteRoom(roomNumber, building.id);
-            updateRoomData(building.id)
-            setIsdeleteingRoom(false)
+            updateRoomData(building.id);
+            setIsdeleteingRoom(false);
+            toast.success("Room Deleted Successfully", {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: 2000,
+                draggable: true
+            });
 
         } catch (error) {
-            console.log(error)
             setIsdeleteingRoom(false)
+            if (error.response && error.response.data && error.response.data.message) {
+                toast.error(`${error.response.data.message}`, {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 2000,
+                    draggable: true
+                });
+            }
+            else if (error.response && error.response.data && error.response.data.error) {
+                toast.error(`${error.response.data.error}`, {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 2000,
+                    draggable: true
+                });
+            }
+            else if (error.response && !error.response.data) {
+                toast.error(`Server Error`, {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 2000,
+                    draggable: true
+                });
+            }
+            else {
+                toast.error(`${error.message}`, {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 2000,
+                    draggable: true
+                });
+            }
         }
     }
 

@@ -21,4 +21,5 @@ class CollegeService{
     }
   
 }
-export default new CollegeService();
+const collegeObj = new CollegeService();
+export default collegeObj;

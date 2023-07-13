@@ -27,4 +27,5 @@ class AuthServices{
     }
   
 }
-export default new AuthServices();
+const AuthObj =  new AuthServices()
+export default AuthObj;
