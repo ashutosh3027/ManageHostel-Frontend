@@ -6,7 +6,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import collegeServices from '../../services/collegeServices';
 import { toast } from 'react-toastify';
 import PulseLoader from "react-spinners/PulseLoader";
-const CollegeForm = ({ onSubmit,isCreatingRoom }) => {
+const CollegeForm = ({ onSubmit, isCreatingRoom }) => {
     const [collegeName, setCollegeName] = useState('');
 
     const handleSubmit = (e) => {
@@ -28,7 +28,7 @@ const CollegeForm = ({ onSubmit,isCreatingRoom }) => {
                 </Row>
                 <Row>
                     <Button type="submit" disabled={isCreatingRoom} variant="primary">
-                       {isCreatingRoom?<PulseLoader color={"#0a138b"} size={10} />:("Create College")}
+                        {isCreatingRoom ? <PulseLoader color={"#0a138b"} size={10} /> : ("Create College")}
                     </Button>
                 </Row>
             </Col>
@@ -71,34 +71,12 @@ const CreateCollegesPage = () => {
                 setIsLoading(false);
             } catch (error) {
                 setIsLoading(false);
-                if (error.response && error.response.data && error.response.data.message) {
-                    toast.error(`${error.response.data.message}`, {
-                        position: toast.POSITION.TOP_CENTER,
-                        autoClose: 2000,
-                        draggable: true
-                    });
-                }
-                else if (error.response && error.response.data && error.response.data.error) {
-                    toast.error(`${error.response.data.error}`, {
-                        position: toast.POSITION.TOP_CENTER,
-                        autoClose: 2000,
-                        draggable: true
-                    });
-                }
-                else if (error.response && !error.response.data) {
-                    toast.error(`Server Error`, {
-                        position: toast.POSITION.TOP_CENTER,
-                        autoClose: 2000,
-                        draggable: true
-                    });
-                }
-                else {
-                    toast.error(`${error.message}`, {
-                        position: toast.POSITION.TOP_CENTER,
-                        autoClose: 2000,
-                        draggable: true
-                    });
-                }
+                const errorMessage = error.response?.data?.message || error.response?.data?.error || 'Server Error';
+                toast.error(errorMessage, {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 2000,
+                    draggable: true,
+                });
             }
 
         })()
@@ -116,34 +94,12 @@ const CreateCollegesPage = () => {
             });
         } catch (error) {
             setIsCreatingRoom(false);
-            if (error.response && error.response.data && error.response.data.message) {
-                toast.error(`${error.response.data.message}`, {
-                    position: toast.POSITION.TOP_CENTER,
-                    autoClose: 2000,
-                    draggable: true
-                });
-            }
-            else if (error.response && error.response.data && error.response.data.error) {
-                toast.error(`${error.response.data.error}`, {
-                    position: toast.POSITION.TOP_CENTER,
-                    autoClose: 2000,
-                    draggable: true
-                });
-            }
-            else if (error.response && !error.response.data) {
-                toast.error(`Server Error`, {
-                    position: toast.POSITION.TOP_CENTER,
-                    autoClose: 2000,
-                    draggable: true
-                });
-            }
-            else {
-                toast.error(`${error.message}`, {
-                    position: toast.POSITION.TOP_CENTER,
-                    autoClose: 2000,
-                    draggable: true
-                });
-            }
+            const errorMessage = error.response?.data?.message || error.response?.data?.error || 'Server Error';
+            toast.error(errorMessage, {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 2000,
+                draggable: true,
+            });
         }
 
     };

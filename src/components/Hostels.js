@@ -45,7 +45,7 @@ export default function Hostels() {
 
             } catch (error) {
                 setIsLoading(false);
-                const errorMessage = error.response?.data?.error || error.response?.data?.message || 'Server Error';
+                const errorMessage = error.response?.data?.message || error.response?.data?.error || 'Server Error';
                 toast.error(errorMessage, {
                     position: toast.POSITION.TOP_CENTER,
                     autoClose: 2000,

@@ -1,5 +1,5 @@
-import React, { lazy, Suspense } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, { lazy, Suspense, useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import { useUser } from "./context/userContext";
 import Navbar from "./components/Navbar.js";
 import About from "./components/About.js";
@@ -19,10 +19,19 @@ import AdminProtectedRoute from "./utils/AdminProtectedRoute";
 import AdminHostels from "./components/AdminComponents/AdminHostels";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ResetPassword from "./components/account/ResetPassword";
 const Home = lazy(() => import("./components/Home"));
 const Profile = lazy(() => import("./components/account/Profile.js"));
+
 function App() {
   const { isDataLoading } = useUser();
+  const [isResetPasswordRoute, setIsResetPasswordRoute] = useState(false);
+  if(window.location.pathname.includes("/resetPassword/")&&!isResetPasswordRoute){
+    setIsResetPasswordRoute(true);
+  }
+  else if(isResetPasswordRoute&&!window.location.pathname.includes("/resetPassword/")){
+    setIsResetPasswordRoute(false);
+  }
 
   return (
     <div className="App">
@@ -31,13 +40,14 @@ function App() {
       ) : (
         <Router>
           <Suspense fallback={<Spinner />}>
-            <Navbar></Navbar>
+          {!isResetPasswordRoute && <Navbar />}
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
               <Route path="/Login" element={<Login />}></Route>
               <Route path="/signup" element={<Register />}></Route>
               <Route path="/forgetPassword" element={<ForgetPassword />}></Route>
+              <Route path="/resetPassword/:token" element={<ResetPassword />}></Route>
               <Route
                 path="/profile"
                 element={

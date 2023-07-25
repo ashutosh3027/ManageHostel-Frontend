@@ -51,7 +51,10 @@
     border-radius: 8px;
     margin: 1.5rem;
   }
-  
+  .cllgBtn{
+    justify-content: end;
+
+  }
 .userData{
     display: flex;
     align-items: center;

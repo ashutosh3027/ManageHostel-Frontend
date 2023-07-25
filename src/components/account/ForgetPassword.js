@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../../assets/css/forgetPassword.css';
 import authServices from "../../services/authServices";
 import PulseLoader from "react-spinners/PulseLoader";
+import { toast } from 'react-toastify';
 export default function ForgetPassword() {
   // State variables
   const [email, setEmail] = useState('');
@@ -11,15 +12,26 @@ export default function ForgetPassword() {
   const doRequestPasswordReset = async function () {
     // Note that this value come from state variables linked to your text input
     const emailValue = email;
-    try{
-        setIsSending(true);
-        await authServices.forgotPassword(emailValue);
-        setEmail('')
-        setIsSending(false);
-      }
-      catch (error) {
-        setIsSending(false);
-      }   
+    try {
+      setIsSending(true);
+      await authServices.forgotPassword(emailValue);
+      setEmail('')
+      setIsSending(false);
+      toast.success("Email sent successfully", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 2000,
+        draggable: true
+      });
+    }
+    catch (error) {
+      setIsSending(false);
+      const errorMessage = error.response?.data?.message || error.response?.data?.error || 'Server Error';
+      toast.error(errorMessage, {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 2000,
+        draggable: true,
+      });
+    }
   };
 
   return (
@@ -36,7 +48,7 @@ export default function ForgetPassword() {
           />
         </div>
         <div className="form_buttons">
-        <p class="button-43" role="button"  onClick={() => doRequestPasswordReset()}> {isSending?<PulseLoader color={"#f5b921"} size={10} loading={isSending} />: `Reset Password`}</p>
+          <p class="button-43" role="button" onClick={() => doRequestPasswordReset()}> {isSending ? <PulseLoader color={"#f5b921"} size={10} loading={isSending} /> : `Reset Password`}</p>
         </div>
       </div>
     </div>

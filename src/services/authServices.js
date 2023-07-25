@@ -20,10 +20,15 @@ class AuthServices{
       const {data}= await API.get('/rooms');
       return data;
     }
-    forgotPassword(email) {
-      return API.post("/users/forgotPassword", {
+    async forgotPassword(email) {
+      return await API.post("/users/forgotPassword", {
         email,
       });
+    }
+    async resetPassword(password, cPassword, token){
+      const {data} = await API.patch(`/users/resetPassword/${token}`, {password, passwordConfirm:cPassword});
+      console.log(data);
+      return data;
     }
   
 }

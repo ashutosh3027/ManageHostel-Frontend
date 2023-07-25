@@ -6,7 +6,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import buildingServices from '../../services/buildingServices';
 import { toast } from 'react-toastify';
 import PulseLoader from "react-spinners/PulseLoader";
-const HostelForm = ({ onSubmit,isHostelCreating }) => {
+const HostelForm = ({ onSubmit, isHostelCreating }) => {
     const [HostelName, setHostelName] = useState('');
 
     const handleSubmit = (e) => {
@@ -28,7 +28,7 @@ const HostelForm = ({ onSubmit,isHostelCreating }) => {
                 </Row>
                 <Row>
                     <Button type="submit" disabled={isHostelCreating} variant="primary">
-                        {isHostelCreating? <PulseLoader color={"#0a138b"} size={10} />:("Create Hostel")}
+                        {isHostelCreating ? <PulseLoader color={"#0a138b"} size={10} /> : ("Create Hostel")}
                     </Button>
                 </Row>
             </Col>
@@ -73,34 +73,12 @@ const CreateHostels = ({ college, setCollege }) => {
 
         } catch (error) {
             setIsHostelCreating(false);
-            if (error.response && error.response.data && error.response.data.message) {
-                toast.error(`${error.response.data.message}`, {
-                    position: toast.POSITION.TOP_CENTER,
-                    autoClose: 2000,
-                    draggable: true
-                });
-            }
-            else if (error.response && error.response.data && error.response.data.error) {
-                toast.error(`${error.response.data.error}`, {
-                    position: toast.POSITION.TOP_CENTER,
-                    autoClose: 2000,
-                    draggable: true
-                });
-            }
-            else if (error.response && !error.response.data) {
-                toast.error(`Server Error`, {
-                    position: toast.POSITION.TOP_CENTER,
-                    autoClose: 2000,
-                    draggable: true
-                });
-            }
-            else {
-                toast.error(`${error.message}`, {
-                    position: toast.POSITION.TOP_CENTER,
-                    autoClose: 2000,
-                    draggable: true
-                });
-            }
+            const errorMessage = error.response?.data?.message || error.response?.data?.error || 'Server Error';
+            toast.error(errorMessage, {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 2000,
+                draggable: true,
+            });
         }
 
     };
@@ -110,7 +88,7 @@ const CreateHostels = ({ college, setCollege }) => {
                 <h2>Create Hostels</h2>
             </Row>
             <Row>
-                <HostelForm onSubmit={handleCreateHostel} isHostelCreating={isHostelCreating}/>
+                <HostelForm onSubmit={handleCreateHostel} isHostelCreating={isHostelCreating} />
             </Row>
 
             <ListComponent heading={'Hostels'} count={college.hostels.length}>

@@ -19,35 +19,12 @@ const RoomProvider = ({ children }) => {
 
       } catch (error) {
         setIsRoomDataLoading(false);
-        console.log(error)
-        if (error.response && error.response.data && error.response.data.message) {
-          toast.error(`${error.response.data.message}`, {
-            position: toast.POSITION.TOP_CENTER,
-            autoClose: 2000,
-            draggable: true
-          });
-        }
-        else if (error.response && error.response.data && error.response.data.error) {
-          toast.error(`${error.response.data.error}`, {
-            position: toast.POSITION.TOP_CENTER,
-            autoClose: 2000,
-            draggable: true
-          });
-        }
-        else if (error.response && !error.response.data) {
-          toast.error(`Server Error`, {
-            position: toast.POSITION.TOP_CENTER,
-            autoClose: 2000,
-            draggable: true
-          });
-        }
-        else {
-          toast.error(`${error.message}`, {
-            position: toast.POSITION.TOP_CENTER,
-            autoClose: 2000,
-            draggable: true
-          });
-        }
+        const errorMessage = error.response?.data?.message || error.response?.data?.error || 'Server Error';
+        toast.error(errorMessage, {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 2000,
+          draggable: true,
+        });
       }
 
     })()
@@ -59,34 +36,12 @@ const RoomProvider = ({ children }) => {
         const res = data.rooms;
         setAllRooms((prv) => ([...prv, ...res]));
       } catch (error) {
-        if (error.response && error.response.data && error.response.data.message) {
-          toast.error(`${error.response.data.message}`, {
-            position: toast.POSITION.TOP_CENTER,
-            autoClose: 2000,
-            draggable: true
-          });
-        }
-        else if (error.response && error.response.data && error.response.data.error) {
-          toast.error(`${error.response.data.error}`, {
-            position: toast.POSITION.TOP_CENTER,
-            autoClose: 2000,
-            draggable: true
-          });
-        }
-        else if (error.response && !error.response.data) {
-          toast.error(`Server Error`, {
-            position: toast.POSITION.TOP_CENTER,
-            autoClose: 2000,
-            draggable: true
-          });
-        }
-        else {
-          toast.error(`${error.message}`, {
-            position: toast.POSITION.TOP_CENTER,
-            autoClose: 2000,
-            draggable: true
-          });
-        }
+        const errorMessage = error.response?.data?.message || error.response?.data?.error || 'Server Error';
+        toast.error(errorMessage, {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 2000,
+          draggable: true,
+        });
       }
 
     }

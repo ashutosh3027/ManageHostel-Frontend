@@ -8,7 +8,7 @@ import roomServices from '../../services/roomServices';
 import PulseLoader from "react-spinners/PulseLoader";
 import { toast } from 'react-toastify';
 export default function AdminHostel() {
-    const { id:hostelId } = useParams();
+    const { id: hostelId } = useParams();
     const { roomData, updateRoomData, isRoomDataLoading } = useRoom();
     const [roomNumber, setRoomNumber] = useState(0);
     const [roomType, setRoomType] = useState('Single');
@@ -43,34 +43,12 @@ export default function AdminHostel() {
 
         } catch (error) {
             setIsRoomCreating(false);
-            if (error.response && error.response.data && error.response.data.message) {
-                toast.error(`${error.response.data.message}`, {
-                    position: toast.POSITION.TOP_CENTER,
-                    autoClose: 2000,
-                    draggable: true
-                });
-            }
-            else if (error.response && error.response.data && error.response.data.error) {
-                toast.error(`${error.response.data.error}`, {
-                    position: toast.POSITION.TOP_CENTER,
-                    autoClose: 2000,
-                    draggable: true
-                });
-            }
-            else if (error.response && !error.response.data) {
-                toast.error(`Server Error`, {
-                    position: toast.POSITION.TOP_CENTER,
-                    autoClose: 2000,
-                    draggable: true
-                });
-            }
-            else {
-                toast.error(`${error.message}`, {
-                    position: toast.POSITION.TOP_CENTER,
-                    autoClose: 2000,
-                    draggable: true
-                });
-            }
+            const errorMessage = error.response?.data?.message || error.response?.data?.error || 'Server Error';
+            toast.error(errorMessage, {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 2000,
+                draggable: true,
+            });
         }
 
 

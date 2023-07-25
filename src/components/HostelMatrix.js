@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import { Pagination, Modal, Button } from 'react-bootstrap';
 import roomServices from '../services/roomServices';
 import './../assets/css/hostelMatrix.css';
@@ -40,34 +40,12 @@ const HostelMatrix = ({ seats }) => {
       setIsBooking(false);
       // Update user data and perform other actions
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.message) {
-        toast.error(`${error.response.data.message}`, {
-          position: toast.POSITION.TOP_CENTER,
-          autoClose: 2000,
-          draggable: true
-        });
-      }
-      else if (error.response && error.response.data && error.response.data.error) {
-        toast.error(`${error.response.data.error}`, {
-          position: toast.POSITION.TOP_CENTER,
-          autoClose: 2000,
-          draggable: true
-        });
-      }
-      else if (error.response && !error.response.data) {
-        toast.error(`Server Error`, {
-          position: toast.POSITION.TOP_CENTER,
-          autoClose: 2000,
-          draggable: true
-        });
-      }
-      else {
-        toast.error(`${error.message}`, {
-          position: toast.POSITION.TOP_CENTER,
-          autoClose: 2000,
-          draggable: true
-        });
-      }
+      const errorMessage =  error.response?.data?.message || error.response?.data?.error || 'Server Error';
+      toast.error(errorMessage, {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 2000,
+        draggable: true,
+      });
       setIsBooking(false);
     }
   };
@@ -118,7 +96,7 @@ const HostelMatrix = ({ seats }) => {
 
   const handleBookingConfirm = (roomNumber, buildingId) => {
     bookRoom(roomNumber, buildingId);
-    
+
   };
 
   return (
@@ -164,7 +142,7 @@ const HostelMatrix = ({ seats }) => {
               disabled={isBooking}
               onClick={() => handleBookingConfirm(selectedRoom.roomNumber, selectedRoom.buildingId)}
             >
-              {isBooking?<PulseLoader color={"#0a138b"} size={10} />:("Book Room")}
+              {isBooking ? <PulseLoader color={"#0a138b"} size={10} /> : ("Book Room")}
             </Button>
           )}
         </Modal.Footer>
