@@ -6,7 +6,7 @@ import { useUser } from './../../context/userContext'
 import { toast } from "react-toastify";
 import PulseLoader from "react-spinners/PulseLoader";
 import { Button } from 'react-bootstrap';
-export default function ResetPassword(props) {
+export default function ResetPassword({setIsResetPasswordRoute}) {
     const { token } = useParams()
     const { setUserState } = useUser()
     const [isUpdating, setIsUpdating] = useState(false);
@@ -27,17 +27,19 @@ export default function ResetPassword(props) {
         validatePassword();
     }, [state])
     useEffect(() => {
+        setIsResetPasswordRoute(true);
         (async () => {
             try {
-                await AuthServices.isValid(token);
+                const data = await AuthServices.isValid(token);
+                console.log(data);
                 setIsValid(true);
                 setIsLoading(false);
             } catch (error) {
                 setIsValid(false);
                 setIsLoading(false);
+                console.log(error)
             }
         })()
-        props.setIsResetPasswordRoute(true)
     }, [])
     const handleChange = (e) => {
         const { id, value } = e.target;
@@ -60,6 +62,7 @@ export default function ResetPassword(props) {
             });
             setState({ password: "", cPassword: "" });
             setUserStateIsUpdatedSuccessfully(true);
+            setIsResetPasswordRoute(false)
             setIsUpdating(false)
         } catch (error) {
             const errorMessage = error.response?.data?.message || error.response?.data?.error || error.message || 'Server Error';
@@ -73,7 +76,7 @@ export default function ResetPassword(props) {
     }
     const handleClick = ()=>{
         setUserStateIsUpdatedSuccessfully(true);
-        props.setIsResetPasswordRoute(false)
+        setIsResetPasswordRoute(false)
     }
     // Redirect to '/' if the user state is updated successfully
     if (userStateIsUpdatedSuccessfully) {

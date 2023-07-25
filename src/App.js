@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useState, useEffect } from "react";
+import React, { lazy, Suspense, useState} from "react";
 import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import { useUser } from "./context/userContext";
 import Navbar from "./components/Navbar.js";

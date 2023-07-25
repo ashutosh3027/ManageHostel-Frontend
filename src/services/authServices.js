@@ -25,6 +25,10 @@ class AuthServices{
         email,
       });
     }
+    async isValid(token){
+      const {data}= await API.get(`/users/resetPassword/${token}`);
+      return data;
+    }
     async resetPassword(password, cPassword, token){
       const {data} = await API.patch(`/users/resetPassword/${token}`, {password, passwordConfirm:cPassword});
       return data;
