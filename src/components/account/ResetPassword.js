@@ -4,9 +4,14 @@ import './../../assets/css/resetPassword.css'
 import AuthServices from './../../services/authServices'
 import { useUser } from './../../context/userContext'
 import { toast } from "react-toastify";
-export default function ResetPassword() {
+import PulseLoader from "react-spinners/PulseLoader";
+import { Button } from 'react-bootstrap';
+export default function ResetPassword(props) {
     const { token } = useParams()
     const { setUserState } = useUser()
+    const [isUpdating, setIsUpdating] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isValid, setIsValid] = useState(false);
     const [userStateIsUpdatedSuccessfully, setUserStateIsUpdatedSuccessfully] = useState(false);
     const [state, setState] = useState({
         password: "",
@@ -21,6 +26,19 @@ export default function ResetPassword() {
     useEffect(() => {
         validatePassword();
     }, [state])
+    useEffect(() => {
+        (async () => {
+            try {
+                await AuthServices.isValid(token);
+                setIsValid(true);
+                setIsLoading(false);
+            } catch (error) {
+                setIsValid(false);
+                setIsLoading(false);
+            }
+        })()
+        props.setIsResetPasswordRoute(true)
+    }, [])
     const handleChange = (e) => {
         const { id, value } = e.target;
         setState((prevState) => ({
@@ -29,7 +47,9 @@ export default function ResetPassword() {
         }));
     };
     const handleSubmit = async (e) => {
+        setIsUpdating(true);
         try {
+
             e.preventDefault();
             const data = await AuthServices.resetPassword(state.password, state.cPassword, token);
             setUserState(data);
@@ -40,6 +60,7 @@ export default function ResetPassword() {
             });
             setState({ password: "", cPassword: "" });
             setUserStateIsUpdatedSuccessfully(true);
+            setIsUpdating(false)
         } catch (error) {
             const errorMessage = error.response?.data?.message || error.response?.data?.error || error.message || 'Server Error';
             toast.error(errorMessage, {
@@ -47,14 +68,30 @@ export default function ResetPassword() {
                 autoClose: 2000,
                 draggable: true,
             });
+            setIsUpdating(false)
         }
+    }
+    const handleClick = ()=>{
+        setUserStateIsUpdatedSuccessfully(true);
+        props.setIsResetPasswordRoute(false)
     }
     // Redirect to '/' if the user state is updated successfully
     if (userStateIsUpdatedSuccessfully) {
         return <Navigate to="/" />;
     }
+    if (isLoading) {
+        return null;
+    }
+    if (!isValid) {
+        return (
+            <div className="invalid-page">
+                <h1 className='text-center'>Invalid Token</h1>
+                <Button variant="primary" onClick={handleClick}>Go To ManageHostels</Button>{' '}
+            </div>
+        )
+    }
     return (
-        <div class="resetPass-page">
+        <div className="resetPass-page">
 
             <h1 className='text-center'>Reset Password</h1>
             <div class="form">
@@ -89,7 +126,7 @@ export default function ResetPassword() {
                     </div>
                 </div> : null}
 
-                <button aria-label="Reset Password" onClick={handleSubmit}>Submit</button>
+                <button aria-label="Reset Password" onClick={handleSubmit} disabled={isUpdating}>{isUpdating ? <PulseLoader color={"#0a138b"} size={10} /> : "Submit"}</button>
             </div>
         </div>
     )

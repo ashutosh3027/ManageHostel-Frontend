@@ -27,7 +27,6 @@ class AuthServices{
     }
     async resetPassword(password, cPassword, token){
       const {data} = await API.patch(`/users/resetPassword/${token}`, {password, passwordConfirm:cPassword});
-      console.log(data);
       return data;
     }
   

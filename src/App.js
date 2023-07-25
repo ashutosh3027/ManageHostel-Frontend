@@ -26,13 +26,7 @@ const Profile = lazy(() => import("./components/account/Profile.js"));
 function App() {
   const { isDataLoading } = useUser();
   const [isResetPasswordRoute, setIsResetPasswordRoute] = useState(false);
-  if(window.location.pathname.includes("/resetPassword/")&&!isResetPasswordRoute){
-    setIsResetPasswordRoute(true);
-  }
-  else if(isResetPasswordRoute&&!window.location.pathname.includes("/resetPassword/")){
-    setIsResetPasswordRoute(false);
-  }
-
+  console.log(isResetPasswordRoute)
   return (
     <div className="App">
       {isDataLoading ? (
@@ -47,7 +41,7 @@ function App() {
               <Route path="/Login" element={<Login />}></Route>
               <Route path="/signup" element={<Register />}></Route>
               <Route path="/forgetPassword" element={<ForgetPassword />}></Route>
-              <Route path="/resetPassword/:token" element={<ResetPassword />}></Route>
+              <Route path="/resetPassword/:token" element={<ResetPassword setIsResetPasswordRoute={setIsResetPasswordRoute} />}></Route>
               <Route
                 path="/profile"
                 element={
