@@ -19,8 +19,6 @@ export default function Profile() {
   if (user) {
     dateOfAllotment = new Date(user.roomAllotedAt);
   }
-  console.log(user)
-
   const resetPassword = () => {
     setIsSending(true);
     authServices.forgotPassword(user.email)
@@ -90,7 +88,7 @@ export default function Profile() {
       }
 
     })()
-    const updatedUser = { ...user, college: editedCollege };
+    // const updatedUser = { ...user, college: editedCollege };
 
     // updateUserData();
     // // Update college name in the database using an API call

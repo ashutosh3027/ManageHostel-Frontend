@@ -20,6 +20,7 @@ import AdminHostels from "./components/AdminComponents/AdminHostels";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ResetPassword from "./components/account/ResetPassword";
+import Contact from "./components/Contact";
 const Home = lazy(() => import("./components/Home"));
 const Profile = lazy(() => import("./components/account/Profile.js"));
 
@@ -41,6 +42,7 @@ function App() {
               <Route path="/Login" element={<Login />}></Route>
               <Route path="/signup" element={<Register />}></Route>
               <Route path="/forgetPassword" element={<ForgetPassword />}></Route>
+              <Route path="/contact" element={<Contact/>}></Route>
               <Route path="/resetPassword/:token" element={<ResetPassword setIsResetPasswordRoute={setIsResetPasswordRoute} />}></Route>
               <Route
                 path="/profile"
